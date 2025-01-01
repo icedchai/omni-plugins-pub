@@ -1,0 +1,104 @@
+﻿using OmniCommonLibrary;
+using PlayerRoles;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Omni_Utils.Configs
+{
+    public class CustomTerminationAnnouncementConfig
+    {
+        [Description("Whether this feature set is enabled")]
+        public bool IsEnabled { get; set; } = true;
+        public Dictionary<OverallRoleType, CustomAnnouncement> ScpCassieString { get; set; } = new Dictionary<OverallRoleType, CustomAnnouncement>()
+        {
+            {new OverallRoleType{RoleId=(sbyte)RoleTypeId.Scp049,
+                RoleType=RoleVersion.BaseGameRole},
+                new CustomAnnouncement{ Words="scp 0 4 9",Translation="SCP-049"} },
+            {new OverallRoleType { RoleId =(sbyte) RoleTypeId.Scp079,
+                RoleType=RoleVersion.BaseGameRole },
+                new CustomAnnouncement{ Words="scp 0 7 9",Translation="SCP-079"}},
+            {new OverallRoleType { RoleId =(sbyte) RoleTypeId.Scp096,
+                RoleType=RoleVersion.BaseGameRole },
+                new CustomAnnouncement { Words = "scp 0 9 6", Translation = "SCP-096" } },
+            {new OverallRoleType { RoleId =(sbyte) RoleTypeId.Scp106 ,
+                RoleType=RoleVersion.BaseGameRole},
+                new CustomAnnouncement{ Words="scp 1 0 6",Translation="SCP-106"}},
+            {new OverallRoleType { RoleId =(sbyte) RoleTypeId.Scp173 ,
+                RoleType=RoleVersion.BaseGameRole},
+                new CustomAnnouncement { Words = "scp 1 7 3", Translation = "SCP-173" } },
+            {new OverallRoleType { RoleId =(sbyte) RoleTypeId.Scp939 ,
+                RoleType=RoleVersion.BaseGameRole},
+                new CustomAnnouncement{ Words="scp 9 3 9",Translation="SCP-939"}},
+            {new OverallRoleType { RoleId =(sbyte) RoleTypeId.Scp3114 ,
+                RoleType=RoleVersion.BaseGameRole},
+                new CustomAnnouncement { Words = "scp 3 1 1 4", Translation = "SCP-3114" } },
+        };
+        [Description("Use %subject% in the announcements for the termination's name. Key is overallroletype, Value is name of Key in scp_termination_cassie_announcements.")]
+        public Dictionary<OverallRoleType, string> ScpTerminationAnnouncementIndex { get; set; } = new Dictionary<OverallRoleType, string>
+        {
+            { new OverallRoleType{RoleId=6,RoleType=RoleVersion.BaseGameRole},
+                "civil_science" },
+            { new OverallRoleType{RoleId=1,RoleType=RoleVersion.BaseGameRole},
+                "civil_classd" },
+            { new OverallRoleType{RoleId=14,RoleType=RoleVersion.BaseGameRole},
+                "goi_unknown_military" },
+            { new OverallRoleType{RoleId=15,RoleType=RoleVersion.BaseGameRole},
+                "mtf_facsec" },
+            { new OverallRoleType{RoleId=4,RoleType=RoleVersion.BaseGameRole},
+                "mtf_epsilon11" },
+            { new OverallRoleType{RoleId=11,RoleType=RoleVersion.BaseGameRole},
+                "mtf_epsilon11" },
+            { new OverallRoleType{RoleId=12,RoleType=RoleVersion.BaseGameRole},
+                "mtf_epsilon11" },
+            { new OverallRoleType{RoleId=8,RoleType=RoleVersion.BaseGameRole},
+                "goi_chaos_insurgency" },
+            { new OverallRoleType{RoleId=18,RoleType=RoleVersion.BaseGameRole},
+                "goi_chaos_insurgency" },
+            { new OverallRoleType{RoleId=19,RoleType=RoleVersion.BaseGameRole},
+                "goi_chaos_insurgency" },
+            { new OverallRoleType{RoleId=20,RoleType=RoleVersion.BaseGameRole},
+                "goi_chaos_insurgency" },
+            { new OverallRoleType{RoleId=1,RoleType=RoleVersion.CrRole},
+                "goi_unusual_incidents_unit" },
+            { new OverallRoleType{RoleId=2,RoleType=RoleVersion.CrRole},
+                "goi_unusual_incidents_unit" },
+            { new OverallRoleType{RoleId=3,RoleType=RoleVersion.CrRole},
+                "goi_unusual_incidents_unit" },
+        };
+        public Dictionary<string, CustomAnnouncement> ScpTerminationCassieAnnouncements { get; set; } = new Dictionary<string, CustomAnnouncement>
+        {
+            {"goi_unusual_incidents_unit",
+                new CustomAnnouncement{Words="%subject% terminated by the jam_1_3 un- use jam_1_2 u all pitch_1 In Jam_15_3 Sigma dids .g4 unit",
+                Translation="%subject% terminated by the Unusual Incidents Unit"}
+            },
+            { "goi_chaosinsurgency" ,
+                new CustomAnnouncement{Words="%subject% terminated by chaosinsurgency" ,
+                    Translation="%subject% terminated by Chaos Insurgency." }
+            },
+            { "goi_unknown_military" ,
+                new CustomAnnouncement{Words="%subject% terminated by Unknown Military Personnel" ,
+                    Translation="%subject% terminated by unknown military personnel." }
+            },
+            { "mtf_epsilon11",
+                new CustomAnnouncement{Words="%subject% terminated by mtfunit epsilon 11 designated ninetailedfox",
+                    Translation="%subject% terminated by Mobile Task Force Unit Epsilon-11 designated Nine-Tailed Fox."}
+            },
+            { "mtf_facsec",
+                new CustomAnnouncement{Words="%subject% terminated by security personnel",
+                    Translation="%subject% terminated by Security Personnel."}
+            },
+            { "civil_science" ,
+                new CustomAnnouncement{Words="%subject% terminated by science personnel" ,
+                    Translation="%subject% terminated by science personnel." }
+            },
+            { "civil_classd" ,
+                new CustomAnnouncement{Words="%subject% terminated by classd personnel",
+                    Translation="%subject% terminated by Class-D personnel." }
+            }
+        };
+    }
+}
