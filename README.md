@@ -5,7 +5,7 @@ It is split into two plugins & one dependency for convenience and expandability.
 
 **Contact icedchqi on Discord for any issues, questions, or concerns.**
 
-## Omni Common Library
+### Omni Common Library
 Omni-CommonLibrary is a small class library that features a couple of extensions & works as a main hub for generalized things I make for these plugins.
 
 It contains one important class, *OverallRoleType*, which is critical but simple to understand.
