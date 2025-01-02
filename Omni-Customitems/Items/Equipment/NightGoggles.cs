@@ -53,7 +53,7 @@ namespace Omni_CustomItems.Items
         {
             base.EquipGoggles(player,showMessage);
 
-            Light light = Light.Create(Vector3.zero,Vector3.zero,Vector3.one,true,new Color(0.5f,1,0.5f));
+            Light light = Light.Create(Vector3.zero,Vector3.zero,Vector3.one,true,new Color(0.2f,1,0.2f));
             light.Intensity = 100;
             light.Range = 100;
             light.ShadowStrength = 0;

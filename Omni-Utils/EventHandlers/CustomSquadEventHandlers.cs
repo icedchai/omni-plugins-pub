@@ -9,6 +9,7 @@ using Exiled.Events.EventArgs.Server;
 using MEC;
 using OmniCommonLibrary;
 using PlayerRoles;
+using Respawning.NamingRules;
 
 namespace Omni_Utils.EventHandlers
 {
@@ -28,6 +29,7 @@ namespace Omni_Utils.EventHandlers
         public void OnChaosAnnouncing(AnnouncingChaosEntranceEventArgs e)
         {
             Log.Debug("Announcing CHAOS ENTRANCE");
+            return;
             if (OmniUtilsPlugin.NextWaveCi is null)
             {
                 return;
@@ -120,16 +122,20 @@ namespace Omni_Utils.EventHandlers
                             e.Players.Remove(player);
                             Log.Info($"Spawned {player} for {customSquad.SquadName}");
                         }
+                        string announcement = customSquad.EntranceAnnouncement;
+                        string announcementSubs = customSquad.EntranceAnnouncementSubs;
+
+                        Cassie.MessageTranslated(announcement, announcementSubs);
                         break;
                     }
                 case Faction.FoundationStaff:
                     {
                         customSquad = OmniUtilsPlugin.NextWaveMtf;
+
                         if (customSquad is null)
                         {
                             return;
                         }
-                        e.IsAllowed = false;
                         foreach (char c in customSquad.SpawnQueue)
                         {
                             if (e.Players.IsEmpty())

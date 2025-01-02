@@ -1,17 +1,11 @@
 ﻿using System;
 using Exiled.API.Features;
-using Exiled.CustomRoles;
 using Exiled.CustomRoles.API;
-using Exiled.CustomRoles.API.Features;
 using System.Collections.Generic;
 using System.IO;
-using Exiled.API.Features.Roles;
 using PlayerRoles;
 using CustomRole = Exiled.CustomRoles.API.Features.CustomRole;
-using OmniCommonLibrary;
 using System.Linq;
-using UncomplicatedCustomRoles.API.Features;
-using Mirror;
 using Customs;
 using Exiled.Loader;
 using System.Reflection;
@@ -22,6 +16,7 @@ namespace OmniCommonLibrary
     {
         public static Assembly Assembly => Loader.Plugins.FirstOrDefault(p => p.Name is "UncomplicatedCustomRoles")?.Assembly;
         public static Type PlayerExtension => Assembly.GetType("UncomplicatedCustomRoles.Extensions.PlayerExtension");
+
         public static Type SummonedCustomRole => Assembly.GetType("UncomplicatedCustomRoles.API.Features.SummonedCustomRole");
         public static string ProcessNickname(string nickname, Player player)
         {
@@ -54,6 +49,7 @@ namespace OmniCommonLibrary
                 .Replace("%division%", player.UnitName);
             nickname = nickname.Replace("%4digit%", $"{rng.Next(1000, 9999)}")
                 .Replace("%1digit%", $"{rng.Next(0, 9)}");
+            
             string rank = null;
 
             //If he has a rank, use it. If not, initialize one for him, and then use that, and store it for him.
@@ -198,20 +194,14 @@ namespace OmniCommonLibrary
 
                     if (SummonedCustomRole is null) return false;
                     MethodInfo SummonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
-                    Log.Debug($"SummonedCustomRoleGet is null {SummonedCustomRoleGet is null}");
                     object ucrSumRole = SummonedCustomRoleGet.Invoke(null, new object[] { player });
-                    Log.Debug($"ucrSumRole is null {ucrSumRole is null}");
                     PropertyInfo ucrRoleProp = ucrSumRole.GetType().GetProperty("Role");
-                    Log.Debug($"ucrRoleProp is null {ucrRoleProp is null}");
                     object ucrSumRoleRole = ucrRoleProp.GetValue(ucrSumRole);
-                    Log.Debug($"ucrSumRoleRole is null {ucrSumRoleRole is null}");
                     PropertyInfo ucrRoleIdProp = ucrSumRoleRole.GetType().GetProperty("Id");
-                    Log.Debug($"ucrRoleIdProp is null {ucrRoleIdProp is null}");
                     object ucrRoleId = ucrRoleIdProp.GetValue(ucrSumRoleRole);
-                    Log.Debug($"ucrRoleId is null {ucrRoleId is null}");
 
                     if (ucrSumRole is null) return false;
-                    return ((int)ucrRoleId == roleType.RoleId);
+                    return (int)ucrRoleId == roleType.RoleId;
                 case RoleVersion.CrRole:
                     if (player.GetCustomRoles().IsEmpty()) return false;
                     CustomRole.TryGet((uint)roleType.RoleId, out CustomRole cr);

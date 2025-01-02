@@ -45,6 +45,8 @@ namespace Omni_Utils.Commands
                 {
                     response += $"\n{crew}";
                 }
+                response += $"\nCurrent squad MTF : {OmniUtilsPlugin.NextWaveMtf}";
+                response += $"\nCurrent squad CI : {OmniUtilsPlugin.NextWaveCi}";
                 return false;
             }
 

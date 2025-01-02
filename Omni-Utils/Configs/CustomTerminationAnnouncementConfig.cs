@@ -54,6 +54,8 @@ namespace Omni_Utils.Configs
                 "mtf_epsilon11" },
             { new OverallRoleType{RoleId=12,RoleType=RoleVersion.BaseGameRole},
                 "mtf_epsilon11" },
+            { new OverallRoleType{RoleId=13,RoleType=RoleVersion.BaseGameRole},
+                "mtf_epsilon11" },
             { new OverallRoleType{RoleId=8,RoleType=RoleVersion.BaseGameRole},
                 "goi_chaos_insurgency" },
             { new OverallRoleType{RoleId=18,RoleType=RoleVersion.BaseGameRole},
@@ -62,12 +64,6 @@ namespace Omni_Utils.Configs
                 "goi_chaos_insurgency" },
             { new OverallRoleType{RoleId=20,RoleType=RoleVersion.BaseGameRole},
                 "goi_chaos_insurgency" },
-            { new OverallRoleType{RoleId=1,RoleType=RoleVersion.CrRole},
-                "goi_unusual_incidents_unit" },
-            { new OverallRoleType{RoleId=2,RoleType=RoleVersion.CrRole},
-                "goi_unusual_incidents_unit" },
-            { new OverallRoleType{RoleId=3,RoleType=RoleVersion.CrRole},
-                "goi_unusual_incidents_unit" },
         };
         public Dictionary<string, CustomAnnouncement> ScpTerminationCassieAnnouncements { get; set; } = new Dictionary<string, CustomAnnouncement>
         {

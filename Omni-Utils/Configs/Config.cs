@@ -17,21 +17,21 @@ namespace Omni_Utils.Configs
         public bool Debug { get; set; } = false;
 
 
-        [Description("All squad names must be different. Leave empty if you're using my other custom squad plugin.")]
+        [Description("All squad names must be different. Leave empty if you're using my other custom squad plugin. PLEASE NOTE: THESE SQUADS ARE UNUSABLE IN THEIR CURRENT STATE, AND ARE FOR DEMONSTRATION PURPOSES ONLY!")]
         public List<CustomSquad> CustomSquads { get; set; } = new List<CustomSquad>
         {
             new CustomSquad()
             {
                 UseCassieAnnouncement=true,
-                SquadName= "mm",
+                SquadName= "delta4",
                 SquadType=SpawnableFaction.NtfWave,
                 EntranceAnnouncement = $"MTFUnit nato_d 4 designated Minute Men division %division% hasentered AllRemaining",
                 EntranceAnnouncementSubs = $"Mobile Task Force Unit Delta-4 designated 'Minutemen', division %divison% has entered the facility. All remaining personnel are advised to proceed with standard evacuation protocols until an MTF squad reaches your destination.",
                 CustomRoles = new Dictionary<char, OverallRoleType>
                 {
-                    {'c', new OverallRoleType{RoleId=1103,RoleType=RoleVersion.UcrRole} },
-                    {'s', new OverallRoleType{RoleId=1102,RoleType=RoleVersion.UcrRole} },
-                    {'p', new OverallRoleType{RoleId=1101,RoleType=RoleVersion.UcrRole} }
+                    {'c', new OverallRoleType{RoleId=15,RoleType=RoleVersion.BaseGameRole} },
+                    {'s', new OverallRoleType{RoleId=14,RoleType=RoleVersion.BaseGameRole} },
+                    {'p', new OverallRoleType{RoleId=13,RoleType=RoleVersion.BaseGameRole} }
                 }
                 ,
                 SpawnQueue="csssspsspspsppspppsspspppp"
@@ -45,14 +45,14 @@ namespace Omni_Utils.Configs
                 EntranceAnnouncementSubs = $"The Special Weapons and Tactical team from Anchorage PD has entered the facility.",
                 CustomRoles = new Dictionary<char, OverallRoleType>
                     {
-                    {'a', new OverallRoleType{ RoleId=1104,RoleType=RoleVersion.UcrRole}
+                    {'a', new OverallRoleType{ RoleId=14,RoleType=RoleVersion.BaseGameRole}
                     },
                 },
                 SpawnQueue="aaaaaaaaaaaaaaaaaaaaaaaaa"
             },
         };
 
-        [Description("Amount of stamina to consume when jumping. Set to 0 to disable.")]
+        [Description("Amount of stamina to consume when jumping. Set to 0 to disable (especially if other plugin already does this).")]
         public float StaminaUseOnJump { get; set; } = 30;
         [Description("Roleplay Height features include randomized height and a player-command to change it")]
         public bool UseRoleplayHeight;

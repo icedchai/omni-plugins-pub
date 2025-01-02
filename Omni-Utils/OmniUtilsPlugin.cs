@@ -75,7 +75,6 @@ namespace Omni_Utils
         
         public override void OnEnabled()
         {
-
             pluginInstance = this;
             
             RueIMain.EnsureInit();
