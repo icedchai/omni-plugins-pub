@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
@@ -29,7 +30,6 @@ namespace Omni_Utils.EventHandlers
         public void OnChaosAnnouncing(AnnouncingChaosEntranceEventArgs e)
         {
             Log.Debug("Announcing CHAOS ENTRANCE");
-            return;
             if (OmniUtilsPlugin.NextWaveCi is null)
             {
                 return;
@@ -44,13 +44,6 @@ namespace Omni_Utils.EventHandlers
             Log.Debug("Announcing CHAOS ENTRANCE: Custom Squad Detected");
             CustomSquad customSquad = OmniUtilsPlugin.NextWaveCi;
             e.IsAllowed = false;
-
-            string announcement = customSquad.EntranceAnnouncement;
-            string announcementSubs = customSquad.EntranceAnnouncementSubs;
-
-            Cassie.MessageTranslated(announcement, announcementSubs);
-
-            OmniUtilsPlugin.NextWaveCi = null;
 
         }
         public void OnNtfAnnouncing(AnnouncingNtfEntranceEventArgs e)
@@ -71,14 +64,6 @@ namespace Omni_Utils.EventHandlers
             Log.Debug("Announcing NTF ENTRANCE: Custom Squad Detected");
             CustomSquad customSquad = OmniUtilsPlugin.NextWaveMtf;
             e.IsAllowed = false;
-            //replaces %division% with the MTF unit name, (eg XRAY-12)
-            Log.Info("Makinga nnouncement");
-            string announcement = customSquad.EntranceAnnouncement.Replace("%division%", $"NATO_{e.UnitName[0]} {e.UnitNumber}");
-            string announcementSubs = customSquad.EntranceAnnouncementSubs.Replace("%division%", $"{e.UnitName}-{e.UnitNumber}");
-            Log.Info($"{announcement} , {announcementSubs}");
-            Cassie.MessageTranslated(announcement,announcementSubs);
-
-            OmniUtilsPlugin.NextWaveMtf = null;
 
         }
         public void OnSpawnWave(RespawningTeamEventArgs e)
@@ -122,16 +107,20 @@ namespace Omni_Utils.EventHandlers
                             e.Players.Remove(player);
                             Log.Info($"Spawned {player} for {customSquad.SquadName}");
                         }
-                        string announcement = customSquad.EntranceAnnouncement;
-                        string announcementSubs = customSquad.EntranceAnnouncementSubs;
+                        if(customSquad.UseCassieAnnouncement)
+                        {
+                            string announcement = customSquad.EntranceAnnouncement;
+                            string announcementSubs = customSquad.EntranceAnnouncementSubs;
 
-                        Cassie.MessageTranslated(announcement, announcementSubs);
+                            Cassie.MessageTranslated(announcement, announcementSubs);
+                        }
                         break;
                     }
                 case Faction.FoundationStaff:
                     {
                         customSquad = OmniUtilsPlugin.NextWaveMtf;
-
+                        NamingRulesManager.TryGetNamingRule(Team.FoundationForces, out UnitNamingRule rule);
+                        
                         if (customSquad is null)
                         {
                             return;
@@ -155,11 +144,26 @@ namespace Omni_Utils.EventHandlers
                             e.Players.Remove(player);
                             Log.Info($"Spawned {player} for {customSquad.SquadName}");
                         }
+                        if (customSquad.UseCassieAnnouncement)
+                        {
+                            string announcement = customSquad.EntranceAnnouncement;
+                            string announcementSubs = customSquad.EntranceAnnouncementSubs;
+
+                            announcementSubs = announcementSubs.Replace("%division%", NamingRulesManager.GeneratedNames[Team.FoundationForces].LastOrDefault());
+
+                            Cassie.MessageTranslated(announcement, announcementSubs);
+                        }
                         break;
                     }
                 default:
                     return;
             }
+        }
+        public string MakeUnitNameReadable(string unit)
+        {
+            string output = string.Empty;
+            string[] thing = unit.Split('-');
+            output += "nato_" + thing[0];
         }
     }
 }
