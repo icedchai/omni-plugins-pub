@@ -58,7 +58,7 @@ Another example `OverallRoleType` corresponding to a UCR role with its ID set to
 If there are any questions, do not be afraid to send me a DM!
 
 
-##Omni Roleplay Utilities
+## Omni Roleplay Utilities
 Omni-Utils is a roleplay utilities plugin, adding a .nick command, the ability to create randomized name systems, a jump-stamina waster, custom termination announcements, a powerful system that can be used to create custom spawn waves/squads, and more. All of these features can be enabled, disabled, and configured to your wishes.
 
 Config
