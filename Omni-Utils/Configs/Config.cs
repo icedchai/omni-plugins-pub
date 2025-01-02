@@ -55,7 +55,7 @@ namespace Omni_Utils.Configs
         [Description("Amount of stamina to consume when jumping. Set to 0 to disable (especially if other plugin already does this).")]
         public float StaminaUseOnJump { get; set; } = 30;
         [Description("Roleplay Height features include randomized height and a player-command to change it")]
-        public bool UseRoleplayHeight;
+        public bool UseRoleplayHeight { get; set; } = true;
         [Description("Nickname configs, good for roleplay purposes.")]
         public NicknameConfig NicknameConfig { get; set; } = new();
         [Description("Rolename (good for custom RP events) related config.")]
