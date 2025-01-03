@@ -12,7 +12,7 @@ It contains one important class, *OverallRoleType*, which is critical but simple
 
 The `RoleType` field can be one of three values: `BaseGameRole`, `CrRole` (EXILED Custom Role), or `UcrRole` (UncomplicatedCustomRoles).
 
-The `RoleId` field can be any integer, which corresponds to the ID of the role in its respective system. The `BaseGameRole` ID system can be found below.
+The `RoleId` field can be any integer, which corresponds to the ID of the role in its respective system (BaseGame, EXILED Customrole, UCR). The `BaseGameRole` ID system can be found below.
 ```
 | Id  | RoleTypeId     |
 |-----|----------------|
