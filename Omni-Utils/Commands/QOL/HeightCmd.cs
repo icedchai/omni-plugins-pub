@@ -14,7 +14,7 @@ namespace Omni_Utils.Commands.QOL
 
         public string[] Aliases { get; } = new[] { "scale" };
 
-        public string Description { get; } = "Set your height, anywhere between 0.75 and 1.1.";
+        public string Description { get; } = $"Set your height, anywhere between {OmniUtilsPlugin.pluginInstance.Config.HeightMin} and {OmniUtilsPlugin.pluginInstance.Config.HeightMax}.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -29,9 +29,9 @@ namespace Omni_Utils.Commands.QOL
                 response = "Usage: height (NUMBER)";
                 return false;
             }
-            if (player.Scale.y < 0.75 || player.Scale.y > 1.11)
+            if (player.Scale.y < OmniUtilsPlugin.pluginInstance.Config.HeightMin-0.01f || player.Scale.y > OmniUtilsPlugin.pluginInstance.Config.HeightMax+0.01f)
             {
-                response = "Your height must be between 0.75 and 1.1 in order to use this command.";
+                response = $"Your height must be between {OmniUtilsPlugin.pluginInstance.Config.HeightMin} and {OmniUtilsPlugin.pluginInstance.Config.HeightMax} in order to use this command.";
                 return false;
             }
             if(!float.TryParse(arguments.Array[1], out float height))
@@ -40,9 +40,9 @@ namespace Omni_Utils.Commands.QOL
                 return false;
             }
 
-            if (height < 0.75 || height > 1.11)
+            if (height < OmniUtilsPlugin.pluginInstance.Config.HeightMin - 0.01f || height > OmniUtilsPlugin.pluginInstance.Config.HeightMax + 0.01f)
             {
-                response = "Invalid height! Please enter a number between 0.75 and 1.1.";
+                response = $"Invalid height! Please enter a number between {OmniUtilsPlugin.pluginInstance.Config.HeightMin} and {OmniUtilsPlugin.pluginInstance.Config.HeightMax}.";
                 return false;
             }
             player.Scale=Vector3.one*height;

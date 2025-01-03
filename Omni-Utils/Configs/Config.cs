@@ -56,6 +56,8 @@ namespace Omni_Utils.Configs
         public float StaminaUseOnJump { get; set; } = 30;
         [Description("Roleplay Height features include randomized height and a player-command to change it")]
         public bool UseRoleplayHeight { get; set; } = true;
+        public float HeightMin { get; set; } = 0.9f;
+        public float HeightMax { get; set; } = 1.1f;
         [Description("Nickname configs, good for roleplay purposes.")]
         public NicknameConfig NicknameConfig { get; set; } = new();
         [Description("Rolename (good for custom RP events) related config.")]

@@ -36,8 +36,12 @@ namespace Omni_Utils.EventHandlers
         {
             Player player = Player.Get(hub.Hub);
 
-
-            return $"Your name is {player.CustomName}. You are {player.GetRoleName()}. ";
+            string output = $"Your name is {player.CustomName}. You are {player.GetRoleName()}.";
+            if (config.UseRoleplayHeight)
+            {
+                output += $"\nYour height is {1.6f*player.Scale.y}";
+            }
+            return output;
         }
         public void OnChangingNickname(ChangingNicknameEventArgs e)
         {
@@ -87,7 +91,7 @@ namespace Omni_Utils.EventHandlers
             if (player.Scale.y < 1.11 && player.Scale.y > 0.74
                 && config.UseRoleplayHeight)
             {
-                player.Scale = Vector3.one * Random.Range(0.9f, 1.1f);
+                player.Scale = Vector3.one * Random.Range( config.HeightMin, config.HeightMax);
             }
 
             if (!e.NewRole.IsHuman()) return;

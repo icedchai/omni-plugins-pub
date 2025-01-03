@@ -77,6 +77,8 @@ custom_squads:
 stamina_use_on_jump: 30
 # Roleplay Height features include randomized height and a player-command to change it
 use_roleplay_height: true
+height_min: 0.9
+height_max: 1.1
 # Nickname configs, good for roleplay purposes.
 nickname_config:
   #SEE: NICKNAME_CONFIG
