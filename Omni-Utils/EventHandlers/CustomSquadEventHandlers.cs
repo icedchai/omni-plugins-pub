@@ -9,10 +9,12 @@ using Exiled.Events.EventArgs.Cassie;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Server;
 using MEC;
+using Omni_Utils.API;
 using Omni_Utils.Commands;
 using OmniCommonLibrary;
 using PlayerRoles;
 using Respawning.NamingRules;
+using Omni_Utils;
 
 namespace Omni_Utils.EventHandlers
 {
@@ -44,7 +46,6 @@ namespace Omni_Utils.EventHandlers
                 return;
             }
             Log.Debug("Announcing CHAOS ENTRANCE: Custom Squad Detected");
-            CustomSquad customSquad = OmniUtilsPlugin.NextWaveCi;
             e.IsAllowed = false;
 
         }
@@ -109,7 +110,7 @@ namespace Omni_Utils.EventHandlers
                             e.Players.Remove(player);
                             Log.Info($"Spawned {player} for {customSquad.SquadName}");
                         }
-                        if(customSquad.UseCassieAnnouncement)
+                        if (customSquad.UseCassieAnnouncement)
                         {
                             string announcement = customSquad.EntranceAnnouncement;
                             string announcementSubs = customSquad.EntranceAnnouncementSubs;
@@ -121,8 +122,7 @@ namespace Omni_Utils.EventHandlers
                 case Faction.FoundationStaff:
                     {
                         customSquad = OmniUtilsPlugin.NextWaveMtf;
-                        //NamingRulesManager.TryGetNamingRule(Team.FoundationForces, out UnitNamingRule rule);
-                        
+
                         if (customSquad is null)
                         {
                             return;
@@ -155,7 +155,7 @@ namespace Omni_Utils.EventHandlers
                                 string announcement = customSquad.EntranceAnnouncement;
                                 string announcementSubs = customSquad.EntranceAnnouncementSubs;
 
-                                announcement = announcement.Replace("%division%", MakeUnitNameReadable(NamingRulesManager.GeneratedNames[Team.FoundationForces].LastOrDefault()));
+                                announcement = announcement.Replace("%division%", OmniUtilsAPI.MakeUnitNameReadable(NamingRulesManager.GeneratedNames[Team.FoundationForces].LastOrDefault()));
                                 announcementSubs = announcementSubs.Replace("%division%", NamingRulesManager.GeneratedNames[Team.FoundationForces].LastOrDefault());
                                 Cassie.MessageTranslated(announcement, announcementSubs);
                             });
@@ -165,13 +165,7 @@ namespace Omni_Utils.EventHandlers
                 default:
                     return;
             }
-        }
-        public string MakeUnitNameReadable(string unit)
-        {
-            string output = string.Empty; //output = ""
-            string[] thing = unit.Split('-'); //thing = ["HOTEL", "09"]
-            output += $"nato_{unit[0]} {thing[1]}"; //output = "nato_H 09"
-            return output;
+
         }
     }
 }

@@ -15,6 +15,7 @@ using UnityEngine;
 using Display = RueI.Displays.Display;
 using Random = UnityEngine.Random;
 using Config = Omni_Utils.Configs.Config;
+using Omni_Utils.API;
 
 namespace Omni_Utils.EventHandlers
 {
@@ -162,8 +163,8 @@ namespace Omni_Utils.EventHandlers
                         OmniUtilsPlugin.pluginInstance.Config.CustomTerminationAnnouncementConfig.ScpCassieString.TryGetValue(newType, out subjectName);
                     }
                 }
-                
-                Cassie.MessageTranslated($"{subjectName.Words} terminated . termination cause unspecified",$"{subjectName.Translation} terminated. Termination cause unspecified.");
+                CustomAnnouncement fallback = config.CustomTerminationAnnouncementConfig.FallbackTerminationAnnouncement;
+                Cassie.MessageTranslated(fallback.Words.Replace("%subject%", subjectName.Words), fallback.Translation.Replace("%subject%", subjectName.Translation));
                 return;
             }
 
@@ -202,6 +203,16 @@ namespace Omni_Utils.EventHandlers
             }
             cassie = cassie.Replace("%subject%", subjectName.Words);
             subs = subs.Replace("%subject%", subjectName.Translation);
+            if (attacker.UnitName.Length < 0)
+            {
+                cassie = cassie.Replace("%division%", OmniUtilsAPI.MakeUnitNameReadable(attacker.UnitName));
+                subs = subs.Replace("%division%", attacker.UnitName);
+            }
+            else
+            {
+                cassie = cassie.Replace("%division%", "unknown");
+                subs = subs.Replace("%division%", "UNKNOWN");
+            }
             Cassie.MessageTranslated(cassie, subs);
         }
         public void OnPlayerDeath(DyingEventArgs e)
