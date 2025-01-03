@@ -5,11 +5,34 @@ using System.Reflection;
 using Customs;
 using Exiled.API.Features;
 using Exiled.CreditTags.Features;
+using Exiled.Loader;
 using MEC;
 using OmniCommonLibrary;
 
 namespace OmniCommonLibrary
 {
+    public static class UcrIntegration
+    {
+        public static void Reflect()
+        {
+            Assembly = Loader.Plugins.FirstOrDefault(p => p.Name is "UncomplicatedCustomRoles")?.Assembly;
+            PlayerExtension = Assembly.GetType("UncomplicatedCustomRoles.Extensions.PlayerExtension");
+            SummonedCustomRole = Assembly.GetType("UncomplicatedCustomRoles.API.Features.SummonedCustomRole");
+            SummonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
+            ucrRoleProp = SummonedCustomRole.GetProperty("Role", BindingFlags.IgnoreCase | BindingFlags.Public);
+            UcrCustomRole = Assembly.GetType("UncomplicatedCustomRoles.API.Features.CustomRole");
+            ucrRoleIdProp = UcrCustomRole.GetProperty("Id");
+        }
+        public static Assembly Assembly;
+        public static Type PlayerExtension;
+
+
+        public static Type SummonedCustomRole;
+        public static MethodInfo SummonedCustomRoleGet;
+        public static PropertyInfo ucrRoleProp;
+        public static Type UcrCustomRole;
+        public static PropertyInfo ucrRoleIdProp;
+    }
     public class OmniCommonLibrary : Plugin<Config>
     {
         public override string Author => "icedchqi";
@@ -35,4 +58,5 @@ namespace OmniCommonLibrary
             pluginInstance = null;
         }
     }
+
 }

@@ -9,15 +9,13 @@ using System.Linq;
 using Customs;
 using Exiled.Loader;
 using System.Reflection;
+using OmniCommonLibrary;
 
 namespace OmniCommonLibrary
 {
     public static class PlayerExtensions
     {
-        public static Assembly Assembly => Loader.Plugins.FirstOrDefault(p => p.Name is "UncomplicatedCustomRoles")?.Assembly;
-        public static Type PlayerExtension => Assembly.GetType("UncomplicatedCustomRoles.Extensions.PlayerExtension");
-
-        public static Type SummonedCustomRole => Assembly.GetType("UncomplicatedCustomRoles.API.Features.SummonedCustomRole");
+        
         public static string ProcessNickname(string nickname, Player player)
         {
             Config config = OmniCommonLibrary.pluginInstance.Config;
@@ -162,14 +160,12 @@ namespace OmniCommonLibrary
         public static OverallRoleType GetOverallRole(this Player player)
         {
 
-            if (SummonedCustomRole is not null)
+            if (UcrIntegration.SummonedCustomRole is not null)
             {
-                MethodInfo SummonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
-                object ucrSumRole = SummonedCustomRoleGet.Invoke(null, new object[] { player });
-                PropertyInfo ucrRoleProp = ucrSumRole.GetType().GetProperty("Role", BindingFlags.IgnoreCase | BindingFlags.Public);
-                object ucrSumRoleRole = ucrRoleProp.GetValue(ucrSumRole);
-                PropertyInfo ucrRoleIdProp = ucrSumRoleRole.GetType().GetProperty("Id");
-                object ucrRoleId = ucrRoleIdProp.GetValue(ucrSumRoleRole);
+                
+                object ucrSumRole = UcrIntegration.SummonedCustomRoleGet.Invoke(null, new object[] { player });
+                object ucrSumRoleRole = UcrIntegration.ucrRoleProp.GetValue(ucrSumRole);
+                object ucrRoleId = UcrIntegration.ucrRoleIdProp.GetValue(ucrSumRoleRole);
                 if (ucrSumRole is not null)
                 {
                     return new OverallRoleType { RoleType = RoleVersion.UcrRole, RoleId = (int)ucrRoleId };
@@ -192,8 +188,8 @@ namespace OmniCommonLibrary
             {
                 case RoleVersion.UcrRole:
 
-                    if (SummonedCustomRole is null) return false;
-                    MethodInfo SummonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
+                    if (UcrIntegration.SummonedCustomRole is null) return false;
+                    MethodInfo SummonedCustomRoleGet = UcrIntegration.SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
                     object ucrSumRole = SummonedCustomRoleGet.Invoke(null, new object[] { player });
                     PropertyInfo ucrRoleProp = ucrSumRole.GetType().GetProperty("Role");
                     object ucrSumRoleRole = ucrRoleProp.GetValue(ucrSumRole);
@@ -207,7 +203,7 @@ namespace OmniCommonLibrary
                     CustomRole.TryGet((uint)roleType.RoleId, out CustomRole cr);
                     return cr is not null && (player.GetCustomRoles().Contains(cr));
                 case RoleVersion.BaseGameRole:
-                    MethodInfo HasCustomRole = PlayerExtension.GetMethod("HasCustomRole");
+                    MethodInfo HasCustomRole = UcrIntegration.PlayerExtension.GetMethod("HasCustomRole");
                     bool hasUcrRole = (bool)HasCustomRole.Invoke(null, new object[] { player });
                     if (!Enum.TryParse($"{roleType.RoleId}", out RoleTypeId roleid)|| hasUcrRole ||!player.GetCustomRoles().IsEmpty()) return false;
                     return (player.Role.Type == roleid);
@@ -240,8 +236,8 @@ namespace OmniCommonLibrary
                     player.Role.Set(baserole);
                     break;
                 case RoleVersion.UcrRole:
-                    if (PlayerExtension is null) return;
-                    MethodInfo SetCustomRole = PlayerExtension.GetMethod("SetCustomRole", new Type[]
+                    if (UcrIntegration.PlayerExtension is null) return;
+                    MethodInfo SetCustomRole = UcrIntegration.PlayerExtension.GetMethod("SetCustomRole", new Type[]
                     {
                         typeof(Player),typeof(int)
                     });
