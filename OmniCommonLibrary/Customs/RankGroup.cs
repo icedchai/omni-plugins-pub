@@ -28,7 +28,7 @@ namespace Customs
         {
             return !(left == right);
         }
-        [Description("This string will be able to be replaced with one of the random possible_replacements in a player's nickname, by" +
+        [Description("This string will be able to be replaced with one of the random possible_replacements in a player's nickname, by " +
             "enclosing it with two %s on each side (e.g rank would be %rank%)")]
         public string Name { get; set; } = "rank";
         public List<string> PossibleReplacements { get; set; } = new List<string> {

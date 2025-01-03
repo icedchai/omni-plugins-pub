@@ -45,8 +45,22 @@ namespace Omni_Utils.Commands
                 {
                     response += $"\n{crew}";
                 }
-                response += $"\nCurrent squad MTF : {OmniUtilsPlugin.NextWaveMtf}";
-                response += $"\nCurrent squad CI : {OmniUtilsPlugin.NextWaveCi}";
+                if (OmniUtilsPlugin.NextWaveMtf is null)
+                {
+                    response += "\nCurrent squad MTF : NONE";
+                }
+                else
+                {
+                    response += $"\nCurrent squad MTF : {OmniUtilsPlugin.NextWaveMtf.SquadName}";
+                }
+                if (OmniUtilsPlugin.NextWaveCi is null)
+                {
+                    response += "\nCurrent squad CI : NONE";
+                }
+                else
+                {
+                    response += $"\nCurrent squad CI : {OmniUtilsPlugin.NextWaveCi.SquadName}";
+                }
                 return false;
             }
 

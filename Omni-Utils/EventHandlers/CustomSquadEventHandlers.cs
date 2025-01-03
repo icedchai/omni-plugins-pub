@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using Exiled.API.Enums;
@@ -8,6 +9,7 @@ using Exiled.Events.EventArgs.Cassie;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Server;
 using MEC;
+using Omni_Utils.Commands;
 using OmniCommonLibrary;
 using PlayerRoles;
 using Respawning.NamingRules;
@@ -62,7 +64,7 @@ namespace Omni_Utils.EventHandlers
 
             }
             Log.Debug("Announcing NTF ENTRANCE: Custom Squad Detected");
-            CustomSquad customSquad = OmniUtilsPlugin.NextWaveMtf;
+            OmniUtilsPlugin.NextWaveMtf = null;
             e.IsAllowed = false;
 
         }
@@ -103,7 +105,7 @@ namespace Omni_Utils.EventHandlers
                             }
 
                             Player player = e.Players.RandomItem();
-                            player.SetOverallRole(roleType);
+                            Timing.CallDelayed(0.01f, () => player.SetOverallRole(roleType));
                             e.Players.Remove(player);
                             Log.Info($"Spawned {player} for {customSquad.SquadName}");
                         }
@@ -119,7 +121,7 @@ namespace Omni_Utils.EventHandlers
                 case Faction.FoundationStaff:
                     {
                         customSquad = OmniUtilsPlugin.NextWaveMtf;
-                        NamingRulesManager.TryGetNamingRule(Team.FoundationForces, out UnitNamingRule rule);
+                        //NamingRulesManager.TryGetNamingRule(Team.FoundationForces, out UnitNamingRule rule);
                         
                         if (customSquad is null)
                         {
@@ -140,18 +142,23 @@ namespace Omni_Utils.EventHandlers
                             }
 
                             Player player = e.Players.RandomItem();
-                            player.SetOverallRole(roleType);
+                            Timing.CallDelayed(0.01f, () => player.SetOverallRole(roleType));
                             e.Players.Remove(player);
                             Log.Info($"Spawned {player} for {customSquad.SquadName}");
                         }
                         if (customSquad.UseCassieAnnouncement)
                         {
-                            string announcement = customSquad.EntranceAnnouncement;
-                            string announcementSubs = customSquad.EntranceAnnouncementSubs;
+                            //This delay ensures that the plugin grabs the correct "latest" Unit Name
+                            Timing.CallDelayed(0.01f, () =>
+                            {
 
-                            announcementSubs = announcementSubs.Replace("%division%", NamingRulesManager.GeneratedNames[Team.FoundationForces].LastOrDefault());
+                                string announcement = customSquad.EntranceAnnouncement;
+                                string announcementSubs = customSquad.EntranceAnnouncementSubs;
 
-                            Cassie.MessageTranslated(announcement, announcementSubs);
+                                announcement = announcement.Replace("%division%", MakeUnitNameReadable(NamingRulesManager.GeneratedNames[Team.FoundationForces].LastOrDefault()));
+                                announcementSubs = announcementSubs.Replace("%division%", NamingRulesManager.GeneratedNames[Team.FoundationForces].LastOrDefault());
+                                Cassie.MessageTranslated(announcement, announcementSubs);
+                            });
                         }
                         break;
                     }
@@ -161,9 +168,10 @@ namespace Omni_Utils.EventHandlers
         }
         public string MakeUnitNameReadable(string unit)
         {
-            string output = string.Empty;
-            string[] thing = unit.Split('-');
-            output += "nato_" + thing[0];
+            string output = string.Empty; //output = ""
+            string[] thing = unit.Split('-'); //thing = ["HOTEL", "09"]
+            output += $"nato_{unit[0]} {thing[1]}"; //output = "nato_H 09"
+            return output;
         }
     }
 }

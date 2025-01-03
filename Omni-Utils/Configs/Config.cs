@@ -26,11 +26,11 @@ namespace Omni_Utils.Configs
                 SquadName= "delta4",
                 SquadType=SpawnableFaction.NtfWave,
                 EntranceAnnouncement = $"MTFUnit nato_d 4 designated Minute Men division %division% hasentered AllRemaining",
-                EntranceAnnouncementSubs = $"Mobile Task Force Unit Delta-4 designated 'Minutemen', division %divison% has entered the facility. All remaining personnel are advised to proceed with standard evacuation protocols until an MTF squad reaches your destination.",
+                EntranceAnnouncementSubs = $"Mobile Task Force Unit Delta-4 designated 'Minutemen', division %division% has entered the facility.<split>All remaining personnel are advised to proceed with standard evacuation protocols until an MTF squad reaches your destination.",
                 CustomRoles = new Dictionary<char, OverallRoleType>
                 {
-                    {'c', new OverallRoleType{RoleId=15,RoleType=RoleVersion.BaseGameRole} },
-                    {'s', new OverallRoleType{RoleId=14,RoleType=RoleVersion.BaseGameRole} },
+                    {'c', new OverallRoleType{RoleId=12,RoleType=RoleVersion.BaseGameRole} },
+                    {'s', new OverallRoleType{RoleId=11,RoleType=RoleVersion.BaseGameRole} },
                     {'p', new OverallRoleType{RoleId=13,RoleType=RoleVersion.BaseGameRole} }
                 }
                 ,
@@ -45,7 +45,7 @@ namespace Omni_Utils.Configs
                 EntranceAnnouncementSubs = $"The Special Weapons and Tactical team from Anchorage PD has entered the facility.",
                 CustomRoles = new Dictionary<char, OverallRoleType>
                     {
-                    {'a', new OverallRoleType{ RoleId=14,RoleType=RoleVersion.BaseGameRole}
+                    {'a', new OverallRoleType{ RoleId=12,RoleType=RoleVersion.BaseGameRole}
                     },
                 },
                 SpawnQueue="aaaaaaaaaaaaaaaaaaaaaaaaa"
