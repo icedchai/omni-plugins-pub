@@ -94,6 +94,7 @@ custom_termination_announcement_config:
 Omni-CustomItems adds the `GogglesItem` class, which can be used to add custom "goggles", of which only one can be worn at a time.
 
 It adds NVGs and SCRAMBLE goggles.
+
 Config:
 ```
 # Is plugin enabled or not?
