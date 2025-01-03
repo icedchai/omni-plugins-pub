@@ -1,6 +1,7 @@
 ﻿using System;
 using CommandSystem;
 using Exiled.API.Features;
+using Omni_Utils.Configs;
 using UnityEngine;
 
 namespace Omni_Utils.Commands.QOL
@@ -14,24 +15,24 @@ namespace Omni_Utils.Commands.QOL
 
         public string[] Aliases { get; } = new[] { "scale" };
 
-        public string Description { get; } = $"Set your height, anywhere between {OmniUtilsPlugin.pluginInstance.Config.HeightMin} and {OmniUtilsPlugin.pluginInstance.Config.HeightMax}.";
-
+        public string Description { get; } = $"Set your height, anywhere between {config.HeightMin} and {config.HeightMax}.";
+        static Config config => OmniUtilsPlugin.pluginInstance.Config;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
-            if(!OmniUtilsPlugin.pluginInstance.Config.UseRoleplayHeight)
+            if(!config.UseRoleplayHeight)
             {
                 response = "This command is currently disabled.";
                 return false;
             }
             if (arguments.Count < 1)
             {
-                response = "Usage: height (NUMBER)";
+                response = $"Usage: height (NUMBER BETWEEN {config.HeightMin} and {config.HeightMax})";
                 return false;
             }
-            if (player.Scale.y < OmniUtilsPlugin.pluginInstance.Config.HeightMin-0.01f || player.Scale.y > OmniUtilsPlugin.pluginInstance.Config.HeightMax+0.01f)
+            if (player.Scale.y < config.HeightMin-0.01f || player.Scale.y > config.HeightMax+0.01f)
             {
-                response = $"Your height must be between {OmniUtilsPlugin.pluginInstance.Config.HeightMin} and {OmniUtilsPlugin.pluginInstance.Config.HeightMax} in order to use this command.";
+                response = $"Your height must be between {config.HeightMin} and {config.HeightMax} in order to use this command.";
                 return false;
             }
             if(!float.TryParse(arguments.Array[1], out float height))
@@ -40,9 +41,9 @@ namespace Omni_Utils.Commands.QOL
                 return false;
             }
 
-            if (height < OmniUtilsPlugin.pluginInstance.Config.HeightMin - 0.01f || height > OmniUtilsPlugin.pluginInstance.Config.HeightMax + 0.01f)
+            if (height < config.HeightMin - 0.01f || height > config.HeightMax + 0.01f)
             {
-                response = $"Invalid height! Please enter a number between {OmniUtilsPlugin.pluginInstance.Config.HeightMin} and {OmniUtilsPlugin.pluginInstance.Config.HeightMax}.";
+                response = $"Invalid height! Please enter a number between {config.HeightMin} and {config.HeightMax}.";
                 return false;
             }
             player.Scale=Vector3.one*height;

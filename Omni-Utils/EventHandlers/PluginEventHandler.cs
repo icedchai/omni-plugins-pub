@@ -39,7 +39,7 @@ namespace Omni_Utils.EventHandlers
             string output = $"Your name is {player.CustomName}. You are {player.GetRoleName()}.";
             if (config.UseRoleplayHeight)
             {
-                output += $"\nYour height is {1.6f*player.Scale.y}";
+                output += $"\nYour height is {Math.Round(1.6f * player.Scale.y,1)} meters.";
             }
             return output;
         }
