@@ -109,7 +109,7 @@ namespace Omni_Utils
             }
             
             Player.Dying += _eventHandler.OnPlayerDeath;
-            if (Config.RolenameConfig.IsEnabled) Player.ChangingNickname += _eventHandler.OnChangingNickname;
+            Player.ChangingNickname += _eventHandler.OnChangingNickname;
             Player.ChangingRole += _eventHandler.OnChangingRole;
 
             
@@ -129,6 +129,7 @@ namespace Omni_Utils
                 Player.Jumping -= _eventHandler.OnPlayerJump;
             }
             Player.Dying -= _eventHandler.OnPlayerDeath;
+            Player.ChangingNickname -= _eventHandler.OnChangingNickname;
             Player.ChangingRole -= _eventHandler.OnChangingRole;
 
 

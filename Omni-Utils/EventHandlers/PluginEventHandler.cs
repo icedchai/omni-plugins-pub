@@ -41,7 +41,8 @@ namespace Omni_Utils.EventHandlers
         }
         public void OnChangingNickname(ChangingNicknameEventArgs e)
         {
-            Timing.CallDelayed(0.1f, () => e.Player.SetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
+            e.NewName = PlayerExtensions.ProcessNickname(e.NewName, e.Player);
+            if (config.RolenameConfig.IsEnabled) Timing.CallDelayed(0.1f, () => e.Player.SetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
         }
         public void OnChangingRole(ChangingRoleEventArgs e)
         {
