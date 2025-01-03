@@ -214,7 +214,7 @@ CUSTOM_TERMINATION_ANNOUNCE_CONFIG default:
       translation: '%subject% terminated by unknown military personnel.'
     mtf_epsilon11:
       words: '%subject% terminated by mtfunit epsilon 11 designated ninetailedfox'
-      translation: '%subject% terminated by Mobile Task Force Unit Epsilon-11 designated Nine-Tailed Fox.'
+      translation: '%subject% terminated by Mobile Task Force Unit Epsilon-11 designated ''Nine-Tailed Fox''.'
     mtf_facsec:
       words: '%subject% terminated by security personnel'
       translation: '%subject% terminated by Security Personnel.'
