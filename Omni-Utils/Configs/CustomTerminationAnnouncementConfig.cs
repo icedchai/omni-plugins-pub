@@ -81,7 +81,7 @@ namespace Omni_Utils.Configs
             },
             { "mtf_epsilon11",
                 new CustomAnnouncement{Words="%subject% terminated by mtfunit epsilon 11 designated ninetailedfox",
-                    Translation="%subject% terminated by Mobile Task Force Unit Epsilon-11 designated Nine-Tailed Fox."}
+                    Translation="%subject% terminated by Mobile Task Force Unit Epsilon-11 designated 'Nine-Tailed Fox'."}
             },
             { "mtf_facsec",
                 new CustomAnnouncement{Words="%subject% terminated by security personnel",
