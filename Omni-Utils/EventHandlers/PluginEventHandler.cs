@@ -83,7 +83,7 @@ namespace Omni_Utils.EventHandlers
                 }
                 else
                 {
-                    player.SetPlayerCustomInfoAndRoleName("", "");
+                    player.SetPlayerCustomInfoAndRoleName("", player.GetRoleName());
                     player.InfoArea = PlayerInfoArea.CustomInfo | PlayerInfoArea.Nickname | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
                 }
             }
