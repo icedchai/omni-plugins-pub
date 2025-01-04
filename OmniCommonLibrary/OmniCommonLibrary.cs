@@ -13,9 +13,9 @@ namespace OmniCommonLibrary
     public class OmniCommonLibrary : Plugin<Config>
     {
         public override string Author => "icedchqi";
-        public override string Name => "Omni Library";
+        public override string Name => "Omni-2 Library";
         public override string Prefix => "omni-commonlibrary";
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 0, 1);
         public static OmniCommonLibrary pluginInstance = null;
         //I call these 'ranks' because they stay the same per-life, and all use the same data slot on a player.
         public static List<RankGroup> consistentReplacements = new List<RankGroup>();

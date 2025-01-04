@@ -13,6 +13,11 @@ namespace Omni_Utils.Configs
     {
         [Description("Whether this feature set is enabled")]
         public bool IsEnabled { get; set; } = true;
+        [Description("The cassie announcement when a subject dies without a valid attacker (attacker doesn't exist)")]
+        public CustomAnnouncement FallbackTerminationAnnouncement { get; set; } = new CustomAnnouncement { 
+            Words= "%subject% terminated . termination cause unspecified",
+            Translation="%subject% terminated. Termination cause unspecified."
+        };
         public Dictionary<OverallRoleType, CustomAnnouncement> ScpCassieString { get; set; } = new Dictionary<OverallRoleType, CustomAnnouncement>()
         {
             {new OverallRoleType{RoleId=(sbyte)RoleTypeId.Scp049,
@@ -65,11 +70,12 @@ namespace Omni_Utils.Configs
             { new OverallRoleType{RoleId=20,RoleType=RoleVersion.BaseGameRole},
                 "goi_chaos_insurgency" },
         };
+        [Description("%division% is the killer's UnitName, or 'UNKNOWN' if unavailable. %subject% is the name of the victim as defined in scp_cassie_string.")]
         public Dictionary<string, CustomAnnouncement> ScpTerminationCassieAnnouncements { get; set; } = new Dictionary<string, CustomAnnouncement>
         {
             {"goi_unusual_incidents_unit",
                 new CustomAnnouncement{Words="%subject% terminated by the jam_1_3 un- use jam_1_2 u all pitch_1 In Jam_15_3 Sigma dids .g4 unit",
-                Translation="%subject% terminated by the Unusual Incidents Unit"}
+                Translation="%subject% terminated by the Unusual Incidents Unit."}
             },
             { "goi_chaosinsurgency" ,
                 new CustomAnnouncement{Words="%subject% terminated by chaosinsurgency" ,
@@ -80,20 +86,20 @@ namespace Omni_Utils.Configs
                     Translation="%subject% terminated by unknown military personnel." }
             },
             { "mtf_epsilon11",
-                new CustomAnnouncement{Words="%subject% terminated by mtfunit epsilon 11 designated ninetailedfox",
-                    Translation="%subject% terminated by Mobile Task Force Unit Epsilon-11 designated 'Nine-Tailed Fox'."}
+                new CustomAnnouncement{Words="%subject% terminated by mtfunit epsilon 11 division %division%",
+                    Translation="%subject% terminated by Mobile Task Force Unit Epsilon-11, division %division%."}
             },
             { "mtf_facsec",
-                new CustomAnnouncement{Words="%subject% terminated by security personnel",
-                    Translation="%subject% terminated by Security Personnel."}
+                new CustomAnnouncement{Words="%subject% containedsuccessfully containmentunit %division%",
+                    Translation="%subject% contained successfully. Containment unit: %division%."}
             },
             { "civil_science" ,
                 new CustomAnnouncement{Words="%subject% terminated by science personnel" ,
-                    Translation="%subject% terminated by science personnel." }
+                    Translation="%subject% terminated by Science Personnel." }
             },
             { "civil_classd" ,
                 new CustomAnnouncement{Words="%subject% terminated by classd personnel",
-                    Translation="%subject% terminated by Class-D personnel." }
+                    Translation="%subject% terminated by Class-D Personnel." }
             }
         };
     }

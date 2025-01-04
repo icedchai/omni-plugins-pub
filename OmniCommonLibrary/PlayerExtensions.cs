@@ -20,6 +20,7 @@ namespace OmniCommonLibrary
         public static Type SummonedCustomRole => Assembly.GetType("UncomplicatedCustomRoles.API.Features.SummonedCustomRole");
         public static string ProcessNickname(string nickname, Player player)
         {
+
             Config config = OmniCommonLibrary.pluginInstance.Config;
             Random rng;
             if (player.SessionVariables.TryGetValue("omni_seed", out Object o))
@@ -44,12 +45,12 @@ namespace OmniCommonLibrary
                 rng = new Random(seed);
             }
 
+
             nickname = nickname.Replace("%nick%", player.Nickname)
                 .Replace("%nickfirst%", $"{player.Nickname[0]}".ToUpper())
                 .Replace("%division%", player.UnitName);
             nickname = nickname.Replace("%4digit%", $"{rng.Next(1000, 9999)}")
                 .Replace("%1digit%", $"{rng.Next(0, 9)}");
-            
             string rank = null;
 
             //If he has a rank, use it. If not, initialize one for him, and then use that, and store it for him.
@@ -72,7 +73,7 @@ namespace OmniCommonLibrary
                 if (rank is not null) player.SessionVariables.Add("omni_rank", rank);
             }
             //Applies the rank to the player's name when processing it.
-            foreach(RankGroup rankGroup in OmniCommonLibrary.consistentReplacements)
+            foreach (RankGroup rankGroup in OmniCommonLibrary.consistentReplacements)
             {
                 if (nickname.Contains($"%{rankGroup.Name.ToLower()}%")) nickname = nickname.Replace($"%{rankGroup.Name}%", rank);
             }
@@ -192,24 +193,26 @@ namespace OmniCommonLibrary
             {
                 case RoleVersion.UcrRole:
 
-                    if (SummonedCustomRole is null) return false;
+                    if (SummonedCustomRole is null)
+                    {
+                        Log.Info("At PlayerExtensions.HasOverallRole, UCR is NOT installed and the code for checking UCR roles will therefore not run.");
+                        return false;
+                    } 
                     MethodInfo SummonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
                     object ucrSumRole = SummonedCustomRoleGet.Invoke(null, new object[] { player });
+                    if (ucrSumRole is null) return false;
                     PropertyInfo ucrRoleProp = ucrSumRole.GetType().GetProperty("Role");
                     object ucrSumRoleRole = ucrRoleProp.GetValue(ucrSumRole);
                     PropertyInfo ucrRoleIdProp = ucrSumRoleRole.GetType().GetProperty("Id");
                     object ucrRoleId = ucrRoleIdProp.GetValue(ucrSumRoleRole);
 
-                    if (ucrSumRole is null) return false;
                     return (int)ucrRoleId == roleType.RoleId;
                 case RoleVersion.CrRole:
                     if (player.GetCustomRoles().IsEmpty()) return false;
                     CustomRole.TryGet((uint)roleType.RoleId, out CustomRole cr);
                     return cr is not null && (player.GetCustomRoles().Contains(cr));
                 case RoleVersion.BaseGameRole:
-                    MethodInfo HasCustomRole = PlayerExtension.GetMethod("HasCustomRole");
-                    bool hasUcrRole = (bool)HasCustomRole.Invoke(null, new object[] { player });
-                    if (!Enum.TryParse($"{roleType.RoleId}", out RoleTypeId roleid)|| hasUcrRole ||!player.GetCustomRoles().IsEmpty()) return false;
+                    if (!Enum.TryParse($"{roleType.RoleId}", out RoleTypeId roleid) || !player.GetCustomRoles().IsEmpty()) return false;
                     return (player.Role.Type == roleid);
                 default: return false;
             }

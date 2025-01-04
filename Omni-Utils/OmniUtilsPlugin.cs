@@ -30,7 +30,7 @@ namespace Omni_Utils
 
         public override string Prefix => "omni-utils";
 
-        public override Version Version => new(1,0,0);
+        public override Version Version => new(1,0,1);
 
 
 
