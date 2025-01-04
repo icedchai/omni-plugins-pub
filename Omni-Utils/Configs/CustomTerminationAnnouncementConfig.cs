@@ -90,16 +90,16 @@ namespace Omni_Utils.Configs
                     Translation="%subject% terminated by Mobile Task Force Unit Epsilon-11, division %division%."}
             },
             { "mtf_facsec",
-                new CustomAnnouncement{Words="%subject% containedsuccessfully . containmentunit %division%",
+                new CustomAnnouncement{Words="%subject% containedsuccessfully containmentunit %division%",
                     Translation="%subject% contained successfully. Containment unit: %division%."}
             },
             { "civil_science" ,
                 new CustomAnnouncement{Words="%subject% terminated by science personnel" ,
-                    Translation="%subject% terminated by science personnel." }
+                    Translation="%subject% terminated by Science Personnel." }
             },
             { "civil_classd" ,
                 new CustomAnnouncement{Words="%subject% terminated by classd personnel",
-                    Translation="%subject% terminated by Class-D personnel." }
+                    Translation="%subject% terminated by Class-D Personnel." }
             }
         };
     }

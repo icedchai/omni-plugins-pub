@@ -46,7 +46,7 @@ namespace Omni_Utils.EventHandlers
         }
         public void OnChangingNickname(ChangingNicknameEventArgs e)
         {
-            e.NewName = PlayerExtensions.ProcessNickname(e.NewName, e.Player);
+            if(e.NewName is not null) e.NewName = PlayerExtensions.ProcessNickname(e.NewName, e.Player);
             if (config.RolenameConfig.IsEnabled) Timing.CallDelayed(0.1f, () => e.Player.SetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
         }
         public void OnChangingRole(ChangingRoleEventArgs e)
@@ -203,7 +203,8 @@ namespace Omni_Utils.EventHandlers
             }
             cassie = cassie.Replace("%subject%", subjectName.Words);
             subs = subs.Replace("%subject%", subjectName.Translation);
-            if (attacker.UnitName.Length < 0)
+            //make sure unit name is not empty
+            if (attacker.UnitName is not null)
             {
                 cassie = cassie.Replace("%division%", OmniUtilsAPI.MakeUnitNameReadable(attacker.UnitName));
                 subs = subs.Replace("%division%", attacker.UnitName);
