@@ -22,7 +22,7 @@ namespace Omni_Utils.Commands.QOL
             {
                 p.SetPlayerCustomInfoAndRoleName(p.GetCustomInfo(),name);
             }
-            response = $"Added custom info {name} to {list.Count()} players.";
+            response = $"Added rolename {name} to {list.Count()} players.";
             return true;
         }
 
