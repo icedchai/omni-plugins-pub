@@ -1,8 +1,9 @@
 ﻿using System;
 using CommandSystem;
 using Exiled.API.Features;
-using Omni_Utils.API;
+using Omni_Utils.Configs;
 using OmniCommonLibrary;
+using Config = Omni_Utils.Configs.Config;
 
 namespace Omni_Utils.Commands.QOL
 {
@@ -16,9 +17,13 @@ namespace Omni_Utils.Commands.QOL
         public string[] Aliases { get; } = new[] { "nick", "name", "rename" };
 
         public string Description { get; } = "Set your nickname";
-
+        static Config config => OmniUtilsPlugin.pluginInstance.Config;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (config.NicknameConfig.IsEnabled) {
+                response = "This command is currently disabled.";
+                return false;
+            }
             //This is a client-side command, created as an improvement upon a previous nickname command for players.
             //The issues with the previous one became apparent when you had more than 24 characters in your nickname,
             //or if you had more than three words in the argument.

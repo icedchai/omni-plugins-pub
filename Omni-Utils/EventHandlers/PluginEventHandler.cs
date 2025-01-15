@@ -54,7 +54,6 @@ namespace Omni_Utils.EventHandlers
 
 
             Player player = e.Player;
-            player.InfoArea = PlayerInfoArea.Nickname | PlayerInfoArea.CustomInfo | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
             //Clearing relevant session variables on role change.
             if (player.SessionVariables.ContainsKey("omni_seed"))
             {
@@ -78,6 +77,7 @@ namespace Omni_Utils.EventHandlers
             }
             if (config.RolenameConfig.IsEnabled)
             {
+                player.InfoArea = PlayerInfoArea.Nickname | PlayerInfoArea.CustomInfo | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
                 if (config.RolenameConfig.RoleRoleNames.TryGetValue(e.NewRole, out string roleName))
                 {
                     player.SetPlayerCustomInfoAndRoleName("", roleName);
@@ -163,6 +163,7 @@ namespace Omni_Utils.EventHandlers
                         OmniUtilsPlugin.pluginInstance.Config.CustomTerminationAnnouncementConfig.ScpCassieString.TryGetValue(newType, out subjectName);
                     }
                 }
+                if (subjectName is null) return;
                 CustomAnnouncement fallback = config.CustomTerminationAnnouncementConfig.FallbackTerminationAnnouncement;
                 Cassie.MessageTranslated(fallback.Words.Replace("%subject%", subjectName.Words), fallback.Translation.Replace("%subject%", subjectName.Translation));
                 return;
@@ -183,8 +184,8 @@ namespace Omni_Utils.EventHandlers
             string cassie;
             string subs;
             CustomAnnouncement announcement;
-            OmniUtilsPlugin.pluginInstance.Config.CustomTerminationAnnouncementConfig.ScpTerminationCassieAnnouncements.TryGetValue(
-                announcementName, out announcement);
+            if (!OmniUtilsPlugin.pluginInstance.Config.CustomTerminationAnnouncementConfig.ScpTerminationCassieAnnouncements.TryGetValue(
+                announcementName, out announcement)) return;
             cassie = announcement.Words;
             subs = announcement.Translation;
 
