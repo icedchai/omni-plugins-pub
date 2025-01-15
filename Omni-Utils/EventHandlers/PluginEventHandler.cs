@@ -54,7 +54,6 @@ namespace Omni_Utils.EventHandlers
 
 
             Player player = e.Player;
-            player.InfoArea = PlayerInfoArea.Nickname | PlayerInfoArea.CustomInfo | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
             //Clearing relevant session variables on role change.
             if (player.SessionVariables.ContainsKey("omni_seed"))
             {
@@ -78,6 +77,7 @@ namespace Omni_Utils.EventHandlers
             }
             if (config.RolenameConfig.IsEnabled)
             {
+                player.InfoArea = PlayerInfoArea.Nickname | PlayerInfoArea.CustomInfo | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
                 if (config.RolenameConfig.RoleRoleNames.TryGetValue(e.NewRole, out string roleName))
                 {
                     player.SetPlayerCustomInfoAndRoleName("", roleName);
