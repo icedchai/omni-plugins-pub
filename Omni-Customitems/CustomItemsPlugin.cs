@@ -5,6 +5,8 @@ using MEC;
 using System;
 using System.Collections.Generic;
 using Exiled.CustomRoles.API.Features;
+using Exiled.CustomItems.API;
+using static PlayerList;
 
 namespace Omni_CustomItems
 {
@@ -27,7 +29,7 @@ namespace Omni_CustomItems
             
 
 
-            Timing.CallDelayed(pluginInstance.Config.RegistryDelay, () => { 
+            Timing.CallDelayed(pluginInstance.Config.RegistryDelay, () => {
                 CustomItem.RegisterItems();
             });
             RegisterEvents();

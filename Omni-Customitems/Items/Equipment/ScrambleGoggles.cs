@@ -21,7 +21,7 @@ namespace Omni_CustomItems.Items
     [CustomItem(ItemType.SCP1344)]
     public class ScrambleGoggles : GogglesItem
     {
-        public override uint Id { get; set; } = CustomItemsPlugin.pluginInstance.Config.IdPrefix + 12;
+        public override uint Id { get; set; } = 1112;
         public override string Name { get; set; } = "SCRAMBLE Goggles";
         public override string Description { get; set; }
         public override float Weight { get; set; }
