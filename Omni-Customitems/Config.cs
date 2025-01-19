@@ -1,4 +1,5 @@
 ﻿using Exiled.API.Interfaces;
+using Omni_CustomItems.Items;
 using System.ComponentModel;
 
 namespace Omni_CustomItems
@@ -9,9 +10,9 @@ namespace Omni_CustomItems
         public bool IsEnabled { get; set; } = true;
         [Description("Is plugin in debug mode?")]
         public bool Debug { get; set; } = true;
-        [Description("Custom Item ID prefix")]
-        public uint IdPrefix { get; set; } = 1100;
         [Description("Delay before items are registered.")]
         public float RegistryDelay { get; set; } = 6f;
+        public NightGoggles NvgGoggleSettings { get; set; } = new();
+        public ScrambleGoggles ScrambleSettings { get; set; } = new();
     }
 }

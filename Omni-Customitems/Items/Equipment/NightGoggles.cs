@@ -16,7 +16,7 @@ namespace Omni_CustomItems.Items
     public class NightGoggles : GogglesItem
     {
         private static Dictionary<int, Light> _playerLights = new Dictionary<int, Light>();
-        public override uint Id { get; set; } = CustomItemsPlugin.pluginInstance.Config.IdPrefix + 13;
+        public override uint Id { get; set; } = 1113;
         public override string Name { get; set; } = "Night Vision Goggles";
         public override string Description { get; set; }
         public override float Weight { get; set; }
