@@ -20,7 +20,7 @@ namespace Omni_CustomItems
 
         public override string Prefix => "omni-customitems";
 
-        public override Version Version => new(1,0,1);
+        public override Version Version => new(1,0,2);
 
         public override void OnEnabled()
         {

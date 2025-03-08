@@ -82,12 +82,11 @@ namespace Omni_CustomItems.Items
             if (Check(e.Item))
             {
                 equippedGoggles.TryGetValue(e.Player.Id, out GogglesItem item);
-                e.IsAllowed = false;
                 if(item != this)
                 {
-                    e.IsAllowed = true;
                     return;
                 }
+                e.IsAllowed = false;
                 RemoveGoggles(e.Player);
             }
         }
