@@ -16,7 +16,7 @@ namespace Omni_Utils.Commands.QOL
         public string[] Aliases { get; } = new[] { "scale" };
 
         public string Description { get; } = $"Set your height, anywhere between {config.HeightMin} and {config.HeightMax}.";
-        static Config config => OmniUtilsPlugin.pluginInstance.Config;
+        static Config config => OmniUtilsPlugin.PluginInstance.Config;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);

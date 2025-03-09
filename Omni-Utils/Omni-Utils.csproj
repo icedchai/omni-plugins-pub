@@ -121,6 +121,7 @@
     <Compile Include="EventHandlers\PluginEventHandler.cs" />
     <Compile Include="Configs\RolenameConfig.cs" />
     <Compile Include="OmniUtilsPlugin.cs" />
+    <Compile Include="Patches\CustomInfoPatch.cs" />
     <Compile Include="Patches\MyPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -135,6 +136,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

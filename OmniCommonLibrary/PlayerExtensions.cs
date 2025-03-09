@@ -9,6 +9,7 @@ using System.Linq;
 using Customs;
 using Exiled.Loader;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace OmniCommonLibrary
 {
@@ -122,43 +123,24 @@ namespace OmniCommonLibrary
         }
         public static string GetCustomInfo(this Player player)
         {
-            string first;
-            using (var reader = new StringReader(player.ReferenceHub.nicknameSync.Network_customPlayerInfoString))
-            {
-                first = reader.ReadLine();
-            }
-            return first;
+            string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
+            return cinfo.Split('\n')[0] ?? "";
         }
         public static string GetNickname(this Player player)
         {
+            string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
 
-            string second;
-
-            using (var reader = new StringReader(player.ReferenceHub.nicknameSync.Network_customPlayerInfoString))
-            {
-                reader.ReadLine();
-                second = reader.ReadLine();
-            }
-            return second;
+            return cinfo.Split('\n')[1] ?? player.DisplayNickname;
         }
         public static string GetRoleName(this Player player)
         {
-            string third;
-            using (var reader = new StringReader(player.ReferenceHub.nicknameSync.Network_customPlayerInfoString))
+            string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
+            if (cinfo.Split('\n').Length < 3)
             {
-                reader.ReadLine();
-                reader.ReadLine();
-                third = reader.ReadLine();
+                return player.Role.Name;
             }
-            if (third is null)
-            {
-                if (player.GetCustomRoles().Count == 0) return player.Role.Name;
-                else
-                {
-                    return player.GetCustomRoles().First().Name;
-                }
-            }
-            return third;
+
+            return cinfo?.Split('\n')?[2];
         }
         public static OverallRoleType GetOverallRole(this Player player)
         {
