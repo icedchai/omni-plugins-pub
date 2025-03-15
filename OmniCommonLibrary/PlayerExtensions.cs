@@ -21,10 +21,8 @@ namespace OmniCommonLibrary
         public static Type SummonedCustomRole => Assembly.GetType("UncomplicatedCustomRoles.API.Features.SummonedCustomRole");
         public static string ProcessNickname(string nickname, Player player)
         {
-
-            Config config = OmniCommonLibrary.pluginInstance.Config;
             Random rng;
-            if (player.SessionVariables.TryGetValue("omni_seed", out Object o))
+            if (player.SessionVariables.TryGetValue("omni_seed", out object o))
             {
                 if (o is int seed)
                 {
@@ -32,16 +30,16 @@ namespace OmniCommonLibrary
                 }
                 else
                 {
-                    //Adds session variable omni_seed to make RNG consistent per-life. omni_seed is removed on death.
+                    // Adds session variable omni_seed to make RNG consistent per-life. omni_seed is removed on death.
                     player.SessionVariables.Remove("omni_seed");
-                    seed = DateTime.Now.Millisecond + DateTime.Now.Second * 20;
+                    seed = DateTime.Now.Millisecond + (DateTime.Now.Second * 20);
                     player.SessionVariables.Add("omni_seed", seed);
                     rng = new Random(seed);
                 }
             }
             else
             {
-                int seed = DateTime.Now.Millisecond + DateTime.Now.Second * 20;
+                int seed = DateTime.Now.Millisecond + (DateTime.Now.Second * 20);
                 player.SessionVariables.Add("omni_seed", seed);
                 rng = new Random(seed);
             }
@@ -54,7 +52,7 @@ namespace OmniCommonLibrary
                 .Replace("%1digit%", $"{rng.Next(0, 9)}");
             string rank = null;
 
-            //If he has a rank, use it. If not, initialize one for him, and then use that, and store it for him.
+            // If he has a rank, use it. If not, initialize one for him, and then use that, and store it for him.
             if (player.SessionVariables.TryGetValue("omni_rank", out o) && o is string)
             {
                 rank = o as string;
@@ -65,26 +63,44 @@ namespace OmniCommonLibrary
                 {
                     player.SessionVariables.Remove("omni_rank");
                 }
-                //Using the consistentReplacements, find out which of the consistentReplacements a player is eligible for by checking if they have a key in their name.
-                //then, choose a random item and set that as their rank. People generally shouldn't be using more than one rank in a name anyways.
+
+                // Using the consistentReplacements, find out which of the consistentReplacements a player is eligible for by checking if they have a key in their name.
+                // then, choose a random item and set that as their rank. People generally shouldn't be using more than one rank in a name anyways.
                 foreach (RankGroup rankGroup in OmniCommonLibrary.consistentReplacements)
                 {
-                    if(nickname.Contains($"%{rankGroup.Name.ToLower()}%")) rank = rankGroup.PossibleReplacements[rng.Next(rankGroup.PossibleReplacements.Count)];
+                    if (nickname.Contains($"%{rankGroup.Name.ToLower()}%"))
+                    {
+                        rank = rankGroup.PossibleReplacements[rng.Next(rankGroup.PossibleReplacements.Count)];
+                    }
                 }
-                if (rank is not null) player.SessionVariables.Add("omni_rank", rank);
+
+                if (rank is not null)
+                {
+                    player.SessionVariables.Add("omni_rank", rank);
+                }
             }
-            //Applies the rank to the player's name when processing it.
+
+            // Applies the rank to the player's name when processing it.
             foreach (RankGroup rankGroup in OmniCommonLibrary.consistentReplacements)
             {
-                if (nickname.Contains($"%{rankGroup.Name.ToLower()}%")) nickname = nickname.Replace($"%{rankGroup.Name}%", rank);
+                if (nickname.Contains($"%{rankGroup.Name.ToLower()}%"))
+                {
+                    nickname = nickname.Replace($"%{rankGroup.Name}%", rank);
+                }
             }
-            //Inconsistent replacements are the same per-life using the rng session variable.
-            foreach(RankGroup rankGroup in OmniCommonLibrary.inconsistentReplacements)
+
+            // Inconsistent replacements are the same per-life using the rng session variable.
+            foreach (RankGroup rankGroup in OmniCommonLibrary.inconsistentReplacements)
             {
-                if (nickname.Contains($"%{rankGroup.Name.ToLower()}%")) nickname = nickname.Replace($"%{rankGroup.Name}%", rankGroup.PossibleReplacements[rng.Next(rankGroup.PossibleReplacements.Count)]);
+                if (nickname.Contains($"%{rankGroup.Name.ToLower()}%"))
+                {
+                    nickname = nickname.Replace($"%{rankGroup.Name}%", rankGroup.PossibleReplacements[rng.Next(rankGroup.PossibleReplacements.Count)]);
+                }
             }
+
             return nickname;
         }
+
         public static string ProcessCustomInfo(string customInfo)
         {
             if (customInfo.Contains("none"))
@@ -93,34 +109,25 @@ namespace OmniCommonLibrary
             }
             return customInfo.Replace("[br]", "");
         }
+
         public static void SetPlayerCustomInfoAndRoleName(this Player player, string customInfo, string role)
         {
-            //Hides the entire InfoArea except the CustomInfo and Badge. InfoArea is the text that displays
-            //when you hover over another player.
-            player.InfoArea = PlayerInfoArea.CustomInfo | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
-            player.ReferenceHub.nicknameSync.ShownPlayerInfo = PlayerInfoArea.CustomInfo | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
-            if (role.Contains("</"))
-                Log.Error($"Failed to apply CustomInfo with Role name at PlayerExtension::ApplyCustomInfoAndRoleName(%Player, string, string): role name can't contains any end tag like </color>, </b>, </size> etc...!\nCustomInfo won't be applied to player {player.Nickname} ({player.Id}) -- Found: {role}");
+            // Hides the entire InfoArea except the CustomInfo and Badge. InfoArea is the text that displays
+            // when you hover over another player.
+            player.ReferenceHub.nicknameSync.ShownPlayerInfo -= 9;
 
-            if (customInfo.StartsWith("<"))
-                Log.Error($"Failed to apply CustomInfo with Role name at PlayerExtension::ApplyCustomInfoAndRoleName(%Player, string, string): role custom_info can't contains any tag like </olor>, <b>, <size> etc...!\nCustomInfo won't be applied to player {player.Nickname} ({player.Id}) -- Found: {customInfo}");
-            //player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = $"{player.CustomName}\n{ProcessCustomInfo(customInfo)}\n{role}";
-
-            //CustomInfo supports line breaks, so I have the "customInfo", then the CustomName, then the rolename
-            //to simulate how the InfoArea is organized in vanilla
-            //(e.g:
-            //Custom info
-            //Jonny
-            //Tutorial)
+            // CustomInfo supports line breaks, so I have the "customInfo", then the CustomName, then the rolename
+            // to simulate how the InfoArea is organized in vanilla
+            // (e.g:
+            // Custom info
+            // Jonny
+            // Tutorial)
             string info = $"{ProcessCustomInfo(customInfo)}\n{player.CustomName}\n{role}";
-            //Replaces %division% with the player's UnitName, if applicable. This allows for custom roles to have the name 
-            //of their MTF unit in their role name (like XRAY-12)
-            //eg Hammer-Down Captain (%division%)
-            //turns into
-            //Hammer-Down Captain (GOLF-09)
+
             info = ProcessNickname(info, player);
             player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = info;
         }
+
         public static string GetCustomInfo(this Player player)
         {
             string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
@@ -147,8 +154,8 @@ namespace OmniCommonLibrary
 
             if (SummonedCustomRole is not null)
             {
-                MethodInfo SummonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
-                object ucrSumRole = SummonedCustomRoleGet.Invoke(null, new object[] { player });
+                MethodInfo summonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
+                object ucrSumRole = summonedCustomRoleGet.Invoke(null, new object[] { player });
                 PropertyInfo ucrRoleProp = ucrSumRole.GetType().GetProperty("Role", BindingFlags.IgnoreCase | BindingFlags.Public);
                 object ucrSumRoleRole = ucrRoleProp.GetValue(ucrSumRole);
                 PropertyInfo ucrRoleIdProp = ucrSumRoleRole.GetType().GetProperty("Id");

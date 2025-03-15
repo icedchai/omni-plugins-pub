@@ -89,19 +89,24 @@
         /// The custom squad event handler instance.
         /// </summary>
         private CustomSquadEventHandlers squadEventHandler;
-        
+
         public override void OnEnabled()
         {
             PluginInstance = this;
-            
+
             RueIMain.EnsureInit();
 
             for (int i = 0; i <= Config.CustomSquads.Count - 1; i++)
             {
                 CustomSquad squad = Config.CustomSquads[i];
+
+                if (squadNameToIndex.ContainsKey(squad.SquadName))
+                }
+
                 squadNameToIndex.Add(squad.SquadName.ToLower(), i);
                 Log.Info($"{squad.SquadName} registered under id {i}");
             }
+
             OmniCommonLibrary.consistentReplacements = OmniCommonLibrary.consistentReplacements.Concat(Config.NicknameConfig.RankGroups).ToList();
             OmniCommonLibrary.inconsistentReplacements = OmniCommonLibrary.inconsistentReplacements.Concat(Config.NicknameConfig.RandomReplacements).ToList();
 
