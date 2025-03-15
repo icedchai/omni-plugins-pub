@@ -100,7 +100,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
     <Compile Include="Customs\CustomAnnouncement.cs" />
     <Compile Include="Customs\CustomSquad.cs" />
     <Compile Include="Customs\RankGroup.cs" />
