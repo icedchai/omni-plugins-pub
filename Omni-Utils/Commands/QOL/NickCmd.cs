@@ -17,7 +17,7 @@ namespace Omni_Utils.Commands.QOL
         public string[] Aliases { get; } = new[] { "nick", "name", "rename" };
 
         public string Description { get; } = "Set your nickname";
-        static Config config => OmniUtilsPlugin.pluginInstance.Config;
+        static Config config => OmniUtilsPlugin.PluginInstance.Config;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (config.NicknameConfig.IsEnabled) {

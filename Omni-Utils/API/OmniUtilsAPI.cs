@@ -12,7 +12,7 @@ namespace Omni_Utils.API
     
         public static string MakeUnitNameReadable(string unit)
         {
-            string output = string.Empty; //output = ""
+            string output = string.Empty;
             string[] thing = unit.Split('-'); //thing = ["HOTEL", "09"]
             output += $"nato_{unit[0]} {thing[1]}"; //output = "nato_H 09"
             return output;

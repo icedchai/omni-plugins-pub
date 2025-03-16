@@ -77,7 +77,7 @@ namespace Omni_Utils.Configs
                 new CustomAnnouncement{Words="%subject% terminated by the jam_1_3 un- use jam_1_2 u all pitch_1 In Jam_15_3 Sigma dids .g4 unit",
                 Translation="%subject% terminated by the Unusual Incidents Unit."}
             },
-            { "goi_chaosinsurgency" ,
+            { "goi_chaos_insurgency" ,
                 new CustomAnnouncement{Words="%subject% terminated by chaosinsurgency" ,
                     Translation="%subject% terminated by Chaos Insurgency." }
             },
