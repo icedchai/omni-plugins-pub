@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using Customs;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.Handlers;
     using MapEditorReborn.API.Features.Objects;
@@ -12,7 +13,6 @@
     using Omni_Utils.EventHandlers;
     using Omni_Utils.Patches;
     using OmniCommonLibrary;
-    using RueI;
     using YamlDotNet.Serialization;
     using Config = Omni_Utils.Configs.Config;
     using Map = Exiled.Events.Handlers.Map;
@@ -90,19 +90,49 @@
         /// </summary>
         private CustomSquadEventHandlers squadEventHandler;
 
+        public const string VanillaSquad = "vaniller";
+
         public override void OnEnabled()
         {
             PluginInstance = this;
 
-            RueIMain.EnsureInit();
+            // RueIMain.EnsureInit();
+
+            CustomSquad vanilla = new CustomSquad { SquadName = VanillaSquad , UseCassieAnnouncement = true };
+
+            CustomSquadEventHandlers.CiPool.AddEntry(vanilla, Config.CiVanillaChance);
+
+            CustomSquadEventHandlers.NtfPool.AddEntry(vanilla, Config.NtfVanillaChance);
 
             for (int i = 0; i <= Config.CustomSquads.Count - 1; i++)
             {
                 CustomSquad squad = Config.CustomSquads[i];
 
-                if (squadNameToIndex.ContainsKey(squad.SquadName))
+                // Shouldn't cause any issues unless the user has typed an infinite amount of the same squad...
+                while (squadNameToIndex.ContainsKey(squad.SquadName) || squad.SquadName == VanillaSquad)
+                {
+                    squad.SquadName += "_";
                 }
-
+                
+                if (squad.SpawnChance > 0)
+                {
+                    switch (squad.SquadType)
+                    {
+                        case SpawnableFaction.NtfWave:
+                            CustomSquadEventHandlers.NtfPool.AddEntry(squad, squad.SpawnChance);
+                            break;
+                        case SpawnableFaction.NtfMiniWave:
+                            CustomSquadEventHandlers.NtfPool.AddEntry(squad, squad.SpawnChance);
+                            break;
+                        case SpawnableFaction.ChaosWave:
+                            CustomSquadEventHandlers.CiPool.AddEntry(squad, squad.SpawnChance);
+                            break;
+                        case SpawnableFaction.ChaosMiniWave:
+                            CustomSquadEventHandlers.CiPool.AddEntry(squad, squad.SpawnChance);
+                            break;
+                    }
+                    Log.Debug($"Registered squad {squad.SquadName} with chance {squad.SpawnChance} under {squad.SquadType}");
+                }
                 squadNameToIndex.Add(squad.SquadName.ToLower(), i);
                 Log.Info($"{squad.SquadName} registered under id {i}");
             }

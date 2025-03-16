@@ -62,7 +62,7 @@
         [Description("Role type corresponding to the letters in the spawn queue. ONLY PUT one character!!")]
         public Dictionary<char,OverallRoleType> CustomRoles { get; set; } = new Dictionary<char, OverallRoleType>
         {
-            { '0', new OverallRoleType { RoleId = 5, RoleType = RoleVersion.BaseGameRole } },
+            { '0', new OverallRoleType { RoleId = 6, RoleType = RoleVersion.BaseGameRole } },
         };
 
         [Description("Put a string of numbers or letters corresponding to the custom-role lookup system above.")]

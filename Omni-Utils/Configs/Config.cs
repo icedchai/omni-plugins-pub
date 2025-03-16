@@ -16,7 +16,8 @@ namespace Omni_Utils.Configs
         [Description("Indicates debug mode enabled or not")]
         public bool Debug { get; set; } = false;
 
-
+        public int NtfVanillaChance { get; set; } = 100;
+        public int CiVanillaChance { get; set; } = 100;
         [Description("All squad names must be different. Leave empty if you're using my other custom squad plugin. PLEASE NOTE: THESE SQUADS ARE UNUSABLE IN THEIR CURRENT STATE, AND ARE FOR DEMONSTRATION PURPOSES ONLY!")]
         public List<CustomSquad> CustomSquads { get; set; } = new List<CustomSquad>
         {
@@ -25,6 +26,8 @@ namespace Omni_Utils.Configs
                 UseCassieAnnouncement=true,
                 SquadName= "delta4",
                 SquadType=SpawnableFaction.NtfWave,
+                SpawnChance = 0,
+                UseTeamVehicle = true,
                 EntranceAnnouncement = $"MTFUnit nato_d 4 designated Minute Men division %division% hasentered AllRemaining",
                 EntranceAnnouncementSubs = $"Mobile Task Force Unit Delta-4 designated 'Minutemen', division %division% has entered the facility.<split>All remaining personnel are advised to proceed with standard evacuation protocols until an MTF squad reaches your destination.",
                 CustomRoles = new Dictionary<char, OverallRoleType>
@@ -38,9 +41,11 @@ namespace Omni_Utils.Configs
             },
             new CustomSquad()
             {
-                UseCassieAnnouncement=true,
-                SquadName= "swat",
-                SquadType=SpawnableFaction.ChaosWave,
+                UseCassieAnnouncement = true,
+                SquadName = "swat",
+                SquadType = SpawnableFaction.ChaosWave,
+                SpawnChance = 0,
+                UseTeamVehicle = true,
                 EntranceAnnouncement = $"the Secret jam_1_1 weapons and tactical team from an core jam_40_2 agent p d hasentered",
                 EntranceAnnouncementSubs = $"The Special Weapons and Tactical team from Anchorage PD has entered the facility.",
                 CustomRoles = new Dictionary<char, OverallRoleType>

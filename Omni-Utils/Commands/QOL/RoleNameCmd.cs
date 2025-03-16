@@ -20,7 +20,7 @@ namespace Omni_Utils.Commands.QOL
             }
             foreach (Player p in list)
             {
-                p.SetPlayerCustomInfoAndRoleName(p.GetCustomInfo(),name);
+                p.OSetPlayerCustomInfoAndRoleName(p.GetCustomInfo(),name);
             }
             response = $"Added rolename {name} to {list.Count()} players.";
             return true;

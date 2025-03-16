@@ -17,12 +17,47 @@
     using OmniCommonLibrary;
     using PlayerRoles;
     using Respawning.NamingRules;
+    using UnityEngine;
 
     /// <summary>
     /// Event handler for custom squad stuff.
     /// </summary>
     public class CustomSquadEventHandlers
     {
+        /// <summary>
+        /// Squad chance pool.
+        /// </summary>
+        internal class SquadPool
+        {
+            private Dictionary<CustomSquad, int> entries = new ();
+            private int accumulatedWeight = 0;
+
+            public void AddEntry(CustomSquad customSquad, int weight)
+            {
+                accumulatedWeight += weight;
+                entries.Add(customSquad, accumulatedWeight);
+            }
+
+            public CustomSquad GetRandomSquad()
+            {
+                float r = UnityEngine.Random.Range(0f, 1f) * accumulatedWeight;
+
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    if (entries.Values.ToList()[i] >= r)
+                    {
+                        return entries.Keys.ToList()[i];
+                    }
+                }
+
+                return null; // should only happen when there are no entries
+            }
+        }
+
+        internal static SquadPool NtfPool { get; set; } = new SquadPool();
+
+        internal static SquadPool CiPool { get; set; } = new SquadPool();
+
         /// <summary>
         /// Event handler for SpawningTeamVehicleEvent.
         /// </summary>
@@ -47,7 +82,7 @@
         public void OnChaosAnnouncing(AnnouncingChaosEntranceEventArgs e)
         {
             Log.Debug("Announcing CHAOS ENTRANCE");
-            if (OmniUtilsPlugin.NextWaveCi is null)
+            if (OmniUtilsPlugin.NextWaveCi is null || OmniUtilsPlugin.NextWaveCi.SquadName == OmniUtilsPlugin.VanillaSquad)
             {
                 return;
             }
@@ -70,8 +105,9 @@
         public void OnNtfAnnouncing(AnnouncingNtfEntranceEventArgs e)
         {
             Log.Debug("Announcing NTF ENTRANCE");
-            if (OmniUtilsPlugin.NextWaveMtf is null)
+            if (OmniUtilsPlugin.NextWaveMtf is null || OmniUtilsPlugin.NextWaveMtf.SquadName == OmniUtilsPlugin.VanillaSquad)
             {
+                OmniUtilsPlugin.NextWaveMtf = null;
                 return;
             }
 
@@ -108,7 +144,12 @@
                         customSquad = OmniUtilsPlugin.NextWaveCi;
                         if (customSquad is null)
                         {
-                            return;
+                            OmniUtilsPlugin.NextWaveCi = NtfPool.GetRandomSquad();
+                            customSquad = OmniUtilsPlugin.NextWaveCi;
+                            if (customSquad.SquadName == OmniUtilsPlugin.VanillaSquad || customSquad is null)
+                            {
+                                return;
+                            }
                         }
 
                         e.IsAllowed = false;
@@ -151,7 +192,12 @@
 
                         if (customSquad is null)
                         {
-                            return;
+                            OmniUtilsPlugin.NextWaveMtf = NtfPool.GetRandomSquad();
+                            customSquad = OmniUtilsPlugin.NextWaveMtf;
+                            if (customSquad.SquadName == OmniUtilsPlugin.VanillaSquad || customSquad is null)
+                            {
+                                return;
+                            }
                         }
 
                         foreach (char c in customSquad.SpawnQueue)

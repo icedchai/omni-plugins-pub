@@ -2,20 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using CustomPlayerEffects;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
     using MEC;
     using Omni_Utils.API;
     using OmniCommonLibrary;
     using PlayerRoles;
-    using RueI.Displays;
-    using RueI.Displays.Scheduling;
-    using RueI.Elements;
     using UnityEngine;
     using Config = Omni_Utils.Configs.Config;
-    using Display = RueI.Displays.Display;
     using Random = UnityEngine.Random;
 
     // PluginEventHandler.cs by icedchqi
@@ -29,7 +27,7 @@
     /// </summary>
     public class PluginEventHandler
     {
-        private static Dictionary<Player, DynamicElement> playerIntroElements = new Dictionary<Player, DynamicElement>();
+        // private static Dictionary<Player, DynamicElement> playerIntroElements = new Dictionary<Player, DynamicElement>();
 
         /// <summary>
         /// Gets the plugin's config.
@@ -39,16 +37,16 @@
         /// <summary>
         /// Gets the intro token for RUEI.
         /// </summary>
-        public static JobToken IntroToken { get; } = new ();
+        // public static JobToken IntroToken { get; } = new ();
 
         /// <summary>
         /// Gets the intro text for a player.
         /// </summary>
         /// <param name="hub">The display core to show to.</param>
         /// <returns>The intro text to display to the player.</returns>
-        public static string IntroGetter(DisplayCore hub)
+        public static string IntroGetter(ReferenceHub hub)
         {
-            Player player = Player.Get(hub.Hub);
+            Player player = Player.Get(hub);
 
             string output = $"Your name is {player.CustomName}. You are {player.GetRoleName()}.";
             if (Config.UseRoleplayHeight)
@@ -72,7 +70,7 @@
 
             if (Config.RolenameConfig.IsEnabled)
             {
-                Timing.CallDelayed(0.1f, () => e.Player.SetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
+                Timing.CallDelayed(0.1f, () => e.Player.OSetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
             }
         }
 
@@ -95,38 +93,67 @@
                 player.SessionVariables.Remove("omni_rank");
             }
 
-            if (Config.NicknameConfig.IsEnabled)
-            {
-                if (Config.NicknameConfig.RoleNicknames.TryGetValue(e.NewRole, out string nickname))
-                {
-                    player.CustomName = PlayerExtensions.ProcessNickname(nickname, player);
-                }
-                else
-                {
-                    player.CustomName = null;
-                }
-            }
-
-            if (Config.RolenameConfig.IsEnabled)
-            {
-                player.InfoArea = PlayerInfoArea.Nickname | PlayerInfoArea.CustomInfo | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
-                if (Config.RolenameConfig.RoleRoleNames.TryGetValue(e.NewRole, out string roleName))
-                {
-                    player.SetPlayerCustomInfoAndRoleName(string.Empty, roleName);
-                }
-                else
-                {
-                    player.SetPlayerCustomInfoAndRoleName(string.Empty, player.GetRoleName());
-                    player.InfoArea = PlayerInfoArea.CustomInfo | PlayerInfoArea.Nickname | PlayerInfoArea.Badge | PlayerInfoArea.UnitName;
-                }
-            }
-
             // Sets random height if the height is appropriate
             if (player.Scale.y < 1.11 && player.Scale.y > 0.74
                 && Config.UseRoleplayHeight)
             {
                 player.Scale = Vector3.one * Random.Range(Config.HeightMin, Config.HeightMax);
             }
+
+            Timing.CallDelayed(0.1f, () =>
+            {
+                if (PlayerExtensions.SummonedCustomRole is not null)
+                {
+                    MethodInfo summonedCustomRoleGet = PlayerExtensions.SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
+                    object ucrSumRole = summonedCustomRoleGet.Invoke(null, new object[] { player });
+                    if (ucrSumRole is not null)
+                    {
+                        if (!Config.NicknameConfig.ShowIntroText)
+                        {
+                            return;
+                        }
+
+                        ShowIntro(player);
+                        return;
+                    }
+                }
+
+                if (!player.GetCustomRoles().IsEmpty())
+                {
+                    if (!Config.NicknameConfig.ShowIntroText)
+                    {
+                        return;
+                    }
+
+                    ShowIntro(player);
+                    return;
+                }
+
+                if (Config.NicknameConfig.IsEnabled)
+                {
+                    if (Config.NicknameConfig.RoleNicknames.TryGetValue(e.NewRole, out string nickname))
+                    {
+                        player.CustomName = PlayerExtensions.ProcessNickname(nickname, player);
+                    }
+                    else
+                    {
+                        player.CustomName = null;
+                    }
+                }
+
+                if (Config.RolenameConfig.IsEnabled)
+                {
+                    if (Config.RolenameConfig.RoleRoleNames.TryGetValue(e.NewRole, out string roleName))
+                    {
+                        player.OSetPlayerCustomInfoAndRoleName(string.Empty, roleName);
+                    }
+                    else
+                    {
+                        player.InfoArea |= PlayerInfoArea.Nickname | PlayerInfoArea.Role;
+                    }
+                }
+            });
+            
 
             if (!e.NewRole.IsHuman())
             {
@@ -154,8 +181,9 @@
                     return;
                 }
 
+                player.ShowHint(IntroGetter(player.ReferenceHub));
                 // Show hint
-                DisplayCore core = DisplayCore.Get(player.ReferenceHub);
+                /*DisplayCore core = DisplayCore.Get(player.ReferenceHub);
                 Display display = new (core);
                 DynamicElement element;
                 if (playerIntroElements.TryGetValue(player, out element))
@@ -175,7 +203,7 @@
                     playerIntroElements.Remove(player);
                     display.Elements.Remove(element);
                 });
-                core.Update();
+                core.Update();*/
             });
         }
 

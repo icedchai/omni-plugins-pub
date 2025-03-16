@@ -63,13 +63,13 @@
             {
                 if (str is null)
                 {
-                    Player.Get(me).SetPlayerCustomInfoAndRoleName(
+                    Player.Get(me).OSetPlayerCustomInfoAndRoleName(
                         string.Empty,
                         Player.Get(me).GetRoleName());
                 }
                 else
                 {
-                    Player.Get(me).SetPlayerCustomInfoAndRoleName(
+                    Player.Get(me).OSetPlayerCustomInfoAndRoleName(
                         str,
                         Player.Get(me).GetRoleName());
                 }

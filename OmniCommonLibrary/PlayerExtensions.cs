@@ -110,11 +110,10 @@ namespace OmniCommonLibrary
             return customInfo.Replace("[br]", "");
         }
 
-        public static void SetPlayerCustomInfoAndRoleName(this Player player, string customInfo, string role)
+        public static void OSetPlayerCustomInfoAndRoleName(this Player player, string customInfo, string role)
         {
-            // Hides the entire InfoArea except the CustomInfo and Badge. InfoArea is the text that displays
-            // when you hover over another player.
-            player.ReferenceHub.nicknameSync.ShownPlayerInfo -= 9;
+            player.ReferenceHub.nicknameSync.Network_playerInfoToShow |= PlayerInfoArea.CustomInfo;
+            player.ReferenceHub.nicknameSync.Network_playerInfoToShow &= ~(PlayerInfoArea.Role | PlayerInfoArea.Nickname);
 
             // CustomInfo supports line breaks, so I have the "customInfo", then the CustomName, then the rolename
             // to simulate how the InfoArea is organized in vanilla
@@ -131,7 +130,7 @@ namespace OmniCommonLibrary
         public static string GetCustomInfo(this Player player)
         {
             string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
-            return cinfo.Split('\n')[0] ?? "";
+            return cinfo.Split('\n')[0] ?? string.Empty;
         }
         public static string GetNickname(this Player player)
         {
@@ -141,17 +140,32 @@ namespace OmniCommonLibrary
         }
         public static string GetRoleName(this Player player)
         {
+            if (SummonedCustomRole is not null)
+            {
+                MethodInfo summonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
+                object ucrSumRole = summonedCustomRoleGet.Invoke(null, new object[] { player });
+                PropertyInfo ucrRoleProp = ucrSumRole.GetType().GetProperty("Role", BindingFlags.IgnoreCase | BindingFlags.Public);
+                object ucrSumRoleRole = ucrRoleProp.GetValue(ucrSumRole);
+                PropertyInfo ucrRoleNameProp = ucrSumRoleRole.GetType().GetProperty("Name");
+                object ucrRoleName = ucrRoleNameProp.GetValue(ucrSumRoleRole);
+
+                if (ucrRoleName is string ucrName)
+                {
+                    return ucrName;
+                }
+            }
+
             string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
             if (cinfo.Split('\n').Length < 3)
             {
                 return player.Role.Name;
             }
 
-            return cinfo?.Split('\n')?[2];
+            return cinfo?.Split('\n')[2] ?? "UNKNOWN";
         }
+
         public static OverallRoleType GetOverallRole(this Player player)
         {
-
             if (SummonedCustomRole is not null)
             {
                 MethodInfo summonedCustomRoleGet = SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
