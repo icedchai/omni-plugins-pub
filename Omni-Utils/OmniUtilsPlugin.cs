@@ -97,12 +97,17 @@
             PluginInstance = this;
 
             // RueIMain.EnsureInit();
-
             CustomSquad vanilla = new CustomSquad { SquadName = VanillaSquad , UseCassieAnnouncement = true };
 
-            CustomSquadEventHandlers.CiPool.AddEntry(vanilla, Config.CiVanillaChance);
+            if (Config.CiVanillaChance > 0)
+            {
+                CustomSquadEventHandlers.CiPool.AddEntry(vanilla, Config.CiVanillaChance);
+            }
 
-            CustomSquadEventHandlers.NtfPool.AddEntry(vanilla, Config.NtfVanillaChance);
+            if (Config.NtfVanillaChance > 0)
+            {
+                CustomSquadEventHandlers.NtfPool.AddEntry(vanilla, Config.NtfVanillaChance);
+            }
 
             for (int i = 0; i <= Config.CustomSquads.Count - 1; i++)
             {
@@ -113,7 +118,7 @@
                 {
                     squad.SquadName += "_";
                 }
-                
+
                 if (squad.SpawnChance > 0)
                 {
                     switch (squad.SquadType)
@@ -131,8 +136,10 @@
                             CustomSquadEventHandlers.CiPool.AddEntry(squad, squad.SpawnChance);
                             break;
                     }
+
                     Log.Debug($"Registered squad {squad.SquadName} with chance {squad.SpawnChance} under {squad.SquadType}");
                 }
+
                 squadNameToIndex.Add(squad.SquadName.ToLower(), i);
                 Log.Info($"{squad.SquadName} registered under id {i}");
             }
@@ -150,6 +157,13 @@
         {
             UnregisterEvents();
             PluginInstance = null;
+
+            CustomSquadEventHandlers.CiPool.ClearEntries();
+            CustomSquadEventHandlers.NtfPool.ClearEntries();
+
+            OmniCommonLibrary.consistentReplacements = OmniCommonLibrary.consistentReplacements.Concat(Config.NicknameConfig.RankGroups).ToList();
+            OmniCommonLibrary.inconsistentReplacements = OmniCommonLibrary.inconsistentReplacements.Concat(Config.NicknameConfig.RandomReplacements).ToList();
+
         }
         private void RegisterEvents()
         {

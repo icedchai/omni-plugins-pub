@@ -32,6 +32,10 @@
             private Dictionary<CustomSquad, int> entries = new ();
             private int accumulatedWeight = 0;
 
+            public void ClearEntries()
+            {
+                entries.Clear();
+            }
             public void AddEntry(CustomSquad customSquad, int weight)
             {
                 accumulatedWeight += weight;
@@ -144,7 +148,7 @@
                         customSquad = OmniUtilsPlugin.NextWaveCi;
                         if (customSquad is null)
                         {
-                            OmniUtilsPlugin.NextWaveCi = NtfPool.GetRandomSquad();
+                            OmniUtilsPlugin.NextWaveCi = CiPool.GetRandomSquad();
                             customSquad = OmniUtilsPlugin.NextWaveCi;
                             if (customSquad.SquadName == OmniUtilsPlugin.VanillaSquad || customSquad is null)
                             {
