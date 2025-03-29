@@ -1,3 +1,5 @@
+# IMPORTANT: plugin is under limited support. message `icedchqi` for more info.
+
 # omni-plugins-pub
 Omni Plugins were originally developed for Omni-2 SCP SL roleplay.
 
