@@ -46,7 +46,7 @@
     </Reference>
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dependancies\EXILEDREF\Assembly-CSharp-Publicized.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="ColdWaterLibrary">
       <HintPath>..\..\ColdWaterLibrary\bin\Debug\ColdWaterLibrary.dll</HintPath>
