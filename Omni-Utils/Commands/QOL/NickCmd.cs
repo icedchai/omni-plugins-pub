@@ -2,7 +2,7 @@
 using CommandSystem;
 using Exiled.API.Features;
 using Omni_Utils.Configs;
-using OmniCommonLibrary;
+using Omni_Utils.Extensions;
 using Config = Omni_Utils.Configs.Config;
 
 namespace Omni_Utils.Commands.QOL
@@ -20,7 +20,8 @@ namespace Omni_Utils.Commands.QOL
         static Config config => OmniUtilsPlugin.PluginInstance.Config;
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (config.NicknameConfig.IsEnabled) {
+            if (!config.NicknameConfig.IsEnabled)
+            {
                 response = "This command is currently disabled.";
                 return false;
             }
@@ -50,7 +51,7 @@ namespace Omni_Utils.Commands.QOL
             }
 
             //Player.CustomName is the nickname, not Player.Nickname, which is their username.
-            player.CustomName = PlayerExtensions.ProcessNickname(name,player);
+            player.CustomName = name;
             Log.Info($"{player.Nickname} ({player.UserId}) set nickname to {name}");
             response = $"Set your nickname to {player.CustomName}.";
             return true;

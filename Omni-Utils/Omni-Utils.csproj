@@ -45,8 +45,11 @@
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExMod.Exiled.9.5.1\lib\net48\Assembly-CSharp-Publicized.dll</HintPath>
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\dependancies\EXILEDREF\Assembly-CSharp-Publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="ColdWaterLibrary">
+      <HintPath>..\..\ColdWaterLibrary\bin\Debug\ColdWaterLibrary.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ExMod.Exiled.9.5.1\lib\net48\CommandSystem.Core.dll</HintPath>
@@ -103,34 +106,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\OmniUtilsAPI.cs" />
-    <Compile Include="Commands\ForceWaveCmd.cs" />
-    <Compile Include="Commands\QOL\CheckOverallRole.cs" />
     <Compile Include="Commands\QOL\HeightCmd.cs" />
     <Compile Include="Commands\QOL\NickCmd.cs" />
-    <Compile Include="Commands\QOL\RoleNameCmd.cs" />
     <Compile Include="Commands\SetupCommandOmni.cs" />
     <Compile Include="Configs\Config.cs" />
-    <Compile Include="Configs\CustomTerminationAnnouncementConfig.cs" />
     <Compile Include="Configs\NicknameConfig.cs" />
-    <Compile Include="EventHandlers\CustomSquadEventHandlers.cs" />
+    <Compile Include="Customs\RankGroup.cs" />
     <Compile Include="EventHandlers\PluginEventHandler.cs" />
     <Compile Include="Configs\RolenameConfig.cs" />
+    <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="OmniUtilsPlugin.cs" />
-    <Compile Include="Patches\CustomInfoPatch.cs" />
+    <Compile Include="Patches\NicknamePatch.cs" />
     <Compile Include="Patches\MyPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Customs\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\OmniCommonLibrary\Omni-CommonLibrary.csproj">
-      <Project>{41ddb92c-1ed8-4f4e-9458-a8a59abdd813}</Project>
-      <Name>Omni-CommonLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
