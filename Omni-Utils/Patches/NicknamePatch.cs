@@ -1,13 +1,8 @@
 ﻿namespace Omni_Utils.Patches
 {
-    using System;
-    using System.Collections.Generic;
-    using CommandSystem;
-    using CommandSystem.Commands.RemoteAdmin;
     using Exiled.API.Features;
     using HarmonyLib;
     using Omni_Utils.Extensions;
-    using Utils;
 
     /// <summary>
     /// Patches the name change.
