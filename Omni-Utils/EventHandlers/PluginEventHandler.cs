@@ -3,17 +3,18 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using ColdWaterLibrary.Extensions;
     using CustomPlayerEffects;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
     using MEC;
-    using Omni_Utils.API;
-    using OmniCommonLibrary;
+    using Omni_Utils.Extensions;
     using PlayerRoles;
     using UnityEngine;
     using Config = Omni_Utils.Configs.Config;
+    using PlayerExtensions = Extensions.PlayerExtensions;
     using Random = UnityEngine.Random;
 
     // PluginEventHandler.cs by icedchqi
@@ -34,10 +35,10 @@
         /// </summary>
         public static Config Config => OmniUtilsPlugin.PluginInstance.Config;
 
-        /// <summary>
+        /*/// <summary>
         /// Gets the intro token for RUEI.
         /// </summary>
-        // public static JobToken IntroToken { get; } = new ();
+        public static JobToken IntroToken { get; } = new ();*/
 
         /// <summary>
         /// Gets the intro text for a player.
@@ -153,7 +154,6 @@
                     }
                 }
             });
-            
 
             if (!e.NewRole.IsHuman())
             {
@@ -181,7 +181,7 @@
                     return;
                 }
 
-                player.ShowHint(IntroGetter(player.ReferenceHub));
+                player.ShowHint(IntroGetter(player.ReferenceHub), 10);
                 // Show hint
                 /*DisplayCore core = DisplayCore.Get(player.ReferenceHub);
                 Display display = new (core);
@@ -225,102 +225,6 @@
         }
 
         /// <summary>
-        /// Event handler for AnnouncingScpTerminationEvent.
-        /// </summary>
-        /// <param name="e">The event args.</param>
-        public void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs e)
-        {
-            if (!Config.CustomTerminationAnnouncementConfig.IsEnabled)
-            {
-                return;
-            }
-
-            // Disables SCP termination announcements
-            e.IsAllowed = false;
-        }
-
-        /// <summary>
-        /// Announces a subject's death.
-        /// </summary>
-        /// <param name="attacker">The player who killed the victim.</param>
-        /// <param name="victim">The player whose death is being announced.</param>
-        public void AnnounceSubjectDeath(Player attacker, Player victim)
-        {
-            CustomAnnouncement subjectName = null;
-            if (attacker is null)
-            {
-                foreach (OverallRoleType newType in OmniUtilsPlugin.PluginInstance.Config.CustomTerminationAnnouncementConfig.ScpCassieString.Keys)
-                {
-                    if (victim.HasOverallRole(newType))
-                    {
-                        OmniUtilsPlugin.PluginInstance.Config.CustomTerminationAnnouncementConfig.ScpCassieString.TryGetValue(newType, out subjectName);
-                    }
-                }
-
-                if (subjectName is null)
-                {
-                    return;
-                }
-
-                CustomAnnouncement fallback = Config.CustomTerminationAnnouncementConfig.FallbackTerminationAnnouncement;
-                Cassie.MessageTranslated(fallback.Words.Replace("%subject%", subjectName.Words), fallback.Translation.Replace("%subject%", subjectName.Translation));
-                return;
-            }
-
-            string announcementName = null;
-            foreach (OverallRoleType newType in OmniUtilsPlugin.PluginInstance.Config.CustomTerminationAnnouncementConfig.ScpTerminationAnnouncementIndex.Keys)
-            {
-                if (attacker.HasOverallRole(newType))
-                {
-                    if (!OmniUtilsPlugin.PluginInstance.Config.CustomTerminationAnnouncementConfig.ScpTerminationAnnouncementIndex.TryGetValue(newType, out announcementName))
-                    {
-                        return;
-                    }
-                }
-            }
-
-            string cassie;
-            string subs;
-            CustomAnnouncement announcement;
-            if (!OmniUtilsPlugin.PluginInstance.Config.CustomTerminationAnnouncementConfig.ScpTerminationCassieAnnouncements.TryGetValue(announcementName, out announcement))
-            {
-                return;
-            }
-
-            cassie = announcement.Words;
-            subs = announcement.Translation;
-            foreach (OverallRoleType newType in OmniUtilsPlugin.PluginInstance.Config.CustomTerminationAnnouncementConfig.ScpCassieString.Keys)
-            {
-                if (victim.HasOverallRole(newType))
-                {
-                    OmniUtilsPlugin.PluginInstance.Config.CustomTerminationAnnouncementConfig.ScpCassieString.TryGetValue(newType, out subjectName);
-                }
-            }
-
-            if (subjectName is null)
-            {
-                return;
-            }
-
-            cassie = cassie.Replace("%subject%", subjectName.Words);
-            subs = subs.Replace("%subject%", subjectName.Translation);
-
-            // Make sure unit name is not empty.
-            if (!string.IsNullOrWhiteSpace(attacker.UnitName))
-            {
-                cassie = cassie.Replace("%division%", OmniUtilsAPI.MakeUnitNameReadable(attacker.UnitName));
-                subs = subs.Replace("%division%", attacker.UnitName);
-            }
-            else
-            {
-                cassie = cassie.Replace("%division%", "unknown");
-                subs = subs.Replace("%division%", "UNKNOWN");
-            }
-
-            Cassie.MessageTranslated(cassie, subs);
-        }
-
-        /// <summary>
         /// Event handler for DyingEvent.
         /// </summary>
         /// <param name="e">The event args.</param>
@@ -334,11 +238,6 @@
             if (Config.NicknameConfig.ResetNamesOnMortality)
             {
                 e.Player.CustomName = null;
-            }
-
-            if (Config.CustomTerminationAnnouncementConfig.IsEnabled)
-            {
-                AnnounceSubjectDeath(e.Attacker, e.Player);
             }
         }
     }

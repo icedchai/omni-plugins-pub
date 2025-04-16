@@ -12,6 +12,7 @@ namespace Omni_Utils.Configs
     {
         [Description("Whether this feature set is enabled")]
         public bool IsEnabled { get; set; } = true;
+
         public Dictionary<RoleTypeId, string> RoleRoleNames { get; set; } = new Dictionary<RoleTypeId, string> {
 
             { RoleTypeId.ClassD, "Class-D Personnel" },
@@ -30,7 +31,7 @@ namespace Omni_Utils.Configs
             { RoleTypeId.ChaosRepressor, "Chaos Insurgency Repressor" },
             { RoleTypeId.ChaosRifleman, "Chaos Insurgency Rifleman" },
 
-
+            { RoleTypeId.Scp106, "SCP-106" },
             { RoleTypeId.Scp079, "SCP-079" },
             { RoleTypeId.Scp096, "SCP-096" },
             { RoleTypeId.Scp939, "SCP-939" },
