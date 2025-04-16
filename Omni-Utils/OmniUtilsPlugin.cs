@@ -88,10 +88,11 @@
         private void UnregisterEvents()
         {
 
-            if (Config.StaminaUseOnJump>0)
+            if (Config.StaminaUseOnJump > 0)
             {
                 Player.Jumping -= eventHandler.OnPlayerJump;
             }
+
             Player.Dying -= eventHandler.OnPlayerDeath;
             Player.ChangingNickname -= eventHandler.OnChangingNickname;
             Player.ChangingRole -= eventHandler.OnChangingRole;
