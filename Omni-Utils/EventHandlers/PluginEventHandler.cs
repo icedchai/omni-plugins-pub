@@ -154,7 +154,6 @@
                     }
                 }
             });
-            
 
             if (!e.NewRole.IsHuman())
             {
@@ -182,7 +181,7 @@
                     return;
                 }
 
-                player.ShowHint(IntroGetter(player.ReferenceHub));
+                player.ShowHint(IntroGetter(player.ReferenceHub), 10);
                 // Show hint
                 /*DisplayCore core = DisplayCore.Get(player.ReferenceHub);
                 Display display = new (core);
