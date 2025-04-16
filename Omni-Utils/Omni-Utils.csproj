@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Commands\QOL\HeightCmd.cs" />
     <Compile Include="Commands\QOL\NickCmd.cs" />
+    <Compile Include="Commands\QOL\RoleNameCmd.cs" />
     <Compile Include="Commands\SetupCommandOmni.cs" />
     <Compile Include="Configs\Config.cs" />
     <Compile Include="Configs\NicknameConfig.cs" />
@@ -116,7 +117,8 @@
     <Compile Include="Configs\RolenameConfig.cs" />
     <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="OmniUtilsPlugin.cs" />
-    <Compile Include="Patches\NicknamePatch.cs" />
+    <Compile Include="Patches\CustomRolePatch.cs" />
+    <Compile Include="Patches\NicknameSyncPatch.cs" />
     <Compile Include="Patches\MyPatcher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

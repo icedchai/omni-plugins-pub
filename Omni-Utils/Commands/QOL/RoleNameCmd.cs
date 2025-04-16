@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CommandSystem;
-using Exiled.API.Features;
-using OmniCommonLibrary;
-
-namespace Omni_Utils.Commands.QOL
+﻿namespace Omni_Utils.Commands.QOL
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using CommandSystem;
+    using Exiled.API.Features;
+    using Omni_Utils.Extensions;
+
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
     public class RoleNameCmd : ICommand
     {
@@ -18,16 +18,20 @@ namespace Omni_Utils.Commands.QOL
             {
                 name += $" {arguments.At(i)}";
             }
+
             foreach (Player p in list)
             {
                 p.OSetPlayerCustomInfoAndRoleName(p.GetCustomInfo(),name);
             }
+
             response = $"Added rolename {name} to {list.Count()} players.";
             return true;
         }
 
         public string Command { get; } = "rolename";
+
         public string[] Aliases { get; }
+
         public string Description { get; } = "Sets the rolename of all specified players. USAGE: rolename (player name or ID) (rolename)";
     }
 }

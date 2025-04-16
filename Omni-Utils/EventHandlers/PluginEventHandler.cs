@@ -35,10 +35,10 @@
         /// </summary>
         public static Config Config => OmniUtilsPlugin.PluginInstance.Config;
 
-        /// <summary>
+        /*/// <summary>
         /// Gets the intro token for RUEI.
         /// </summary>
-        // public static JobToken IntroToken { get; } = new ();
+        public static JobToken IntroToken { get; } = new ();*/
 
         /// <summary>
         /// Gets the intro text for a player.

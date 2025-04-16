@@ -72,6 +72,7 @@
             UnregisterEvents();
             PluginInstance = null;
         }
+
         private void RegisterEvents()
         {
             eventHandler = new PluginEventHandler();

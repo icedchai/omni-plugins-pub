@@ -5,6 +5,7 @@ using Omni_Utils.Customs;
 using PlayerRoles;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -106,9 +107,10 @@ namespace Omni_Utils.Extensions
         {
             if (customInfo.Contains("none"))
             {
-                return "";
+                return string.Empty;
             }
-            return customInfo.Replace("[br]", "");
+
+            return customInfo.Replace("[br]", string.Empty);
         }
 
         public static void OSetPlayerCustomInfoAndRoleName(this Player player, string customInfo, string role)
@@ -122,7 +124,7 @@ namespace Omni_Utils.Extensions
             // Custom info
             // Jonny
             // Tutorial)
-            string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"{customInfo}\n")}{(player.HasCustomName ? $"<color=#944710></color>{player.CustomName}<color=#944710>*</color>" : player.Nickname)}\n{role}";
+            string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"<color=#FFFFFF></color>{customInfo}\n")}<color=#944710></color>{(player.HasCustomName ? $"{player.CustomName}<color=#944710>*</color>" : player.Nickname)}\n{role}";
 
             info = ProcessNickname(info, player);
             player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = info;
@@ -131,20 +133,53 @@ namespace Omni_Utils.Extensions
         public static string GetCustomInfo(this Player player)
         {
             string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
-            return cinfo.Length - cinfo.Replace(Environment.NewLine, string.Empty).Length < 3 ? string.Empty : cinfo.Split('\n')[0];
-        }
-        public static string GetNickname(this Player player)
-        {
-            string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
 
-            return cinfo.Split('\n')[1] ?? player.DisplayNickname;
+            using (StringReader reader = new StringReader(cinfo))
+            {
+                string line;
+                string returnValue = string.Empty;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.StartsWith("<color=#944710></color>"))
+                    {
+                        return returnValue;
+                    }
+
+                    returnValue += line;
+                }
+
+                return returnValue;
+            }
         }
 
+        /// <summary>
+        /// Gets the current rolename of the player.
+        /// </summary>
+        /// <param name="player">Player.</param>
+        /// <returns>The current rolename of the player.</returns>
         public static string GetRoleName(this Player player)
         {
             string cinfo = player.ReferenceHub.nicknameSync.Network_customPlayerInfoString ?? string.Empty;
 
-            return cinfo.Split('\n').Last() ?? player.Role.Name;
+            using (StringReader reader = new StringReader(cinfo))
+            {
+                string line;
+                string returnValue = string.Empty;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.StartsWith("<color=#944710></color>"))
+                    {
+                        break;
+                    }
+                }
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    returnValue += line;
+                }
+
+                return string.IsNullOrWhiteSpace(returnValue) ? player.Role.Name : returnValue;
+            }
         }
 
     }
