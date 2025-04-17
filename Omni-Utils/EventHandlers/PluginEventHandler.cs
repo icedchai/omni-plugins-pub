@@ -3,7 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using ColdWaterLibrary.Enums;
     using ColdWaterLibrary.Extensions;
+    using ColdWaterLibrary.Types;
     using CustomPlayerEffects;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
@@ -64,14 +66,14 @@
         /// <param name="e">The event args.</param>
         public void OnChangingNickname(ChangingNicknameEventArgs e)
         {
-            if (e.NewName is not null)
+            if (!string.IsNullOrWhiteSpace(e.NewName))
             {
                 e.NewName = PlayerExtensions.ProcessNickname(e.NewName, e.Player);
             }
 
             if (Config.RolenameConfig.IsEnabled)
             {
-                Timing.CallDelayed(0.1f, () => e.Player.OSetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
+                Timing.CallDelayed(0.01f, () => e.Player.OSetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
             }
         }
 
@@ -103,30 +105,24 @@
 
             Timing.CallDelayed(0.1f, () =>
             {
-                if (PlayerExtensions.SummonedCustomRole is not null)
+                if (player.GetOverallRoleType().RoleType == TypeSystem.Uncomplicated)
                 {
-                    MethodInfo summonedCustomRoleGet = PlayerExtensions.SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
-                    object ucrSumRole = summonedCustomRoleGet.Invoke(null, new object[] { player });
-                    if (ucrSumRole is not null)
+                    player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
+                    if (Config.NicknameConfig.ShowIntroText)
                     {
-                        if (!Config.NicknameConfig.ShowIntroText)
-                        {
-                            return;
-                        }
-
                         ShowIntro(player);
-                        return;
                     }
+
+                    return;
                 }
 
                 if (!player.GetCustomRoles().IsEmpty())
                 {
-                    if (!Config.NicknameConfig.ShowIntroText)
+                    if (Config.NicknameConfig.ShowIntroText)
                     {
-                        return;
+                        ShowIntro(player);
                     }
 
-                    ShowIntro(player);
                     return;
                 }
 
@@ -134,7 +130,7 @@
                 {
                     if (Config.NicknameConfig.RoleNicknames.TryGetValue(e.NewRole, out string nickname))
                     {
-                        player.CustomName = PlayerExtensions.ProcessNickname(nickname, player);
+                        player.CustomName = nickname;
                     }
                     else
                     {

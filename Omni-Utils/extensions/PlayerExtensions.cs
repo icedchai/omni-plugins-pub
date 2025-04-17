@@ -1,4 +1,5 @@
-﻿using ColdWaterLibrary.Types;
+﻿using ColdWaterLibrary.Extensions;
+using ColdWaterLibrary.Types;
 using Exiled.API.Features;
 using Exiled.Loader;
 using Omni_Utils.Customs;
@@ -178,7 +179,7 @@ namespace Omni_Utils.Extensions
                     returnValue += line;
                 }
 
-                return string.IsNullOrWhiteSpace(returnValue) ? player.Role.Name : returnValue;
+                return string.IsNullOrWhiteSpace(returnValue) ? player.GetOverallRoleType().GetName() : returnValue;
             }
         }
 
