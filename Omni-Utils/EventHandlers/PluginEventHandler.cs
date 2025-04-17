@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using ColdWaterLibrary.Enums;
     using ColdWaterLibrary.Extensions;
     using ColdWaterLibrary.Types;
     using CustomPlayerEffects;
@@ -72,7 +73,7 @@
 
             if (Config.RolenameConfig.IsEnabled)
             {
-                Timing.CallDelayed(0.01f, () => e.Player.OSetPlayerCustomInfoAndRoleName(string.Empty, e.Player.GetOverallRoleType().GetName()));
+                Timing.CallDelayed(0.01f, () => e.Player.OSetPlayerCustomInfoAndRoleName(e.Player.GetCustomInfo(), e.Player.GetRoleName()));
             }
         }
 
@@ -104,32 +105,24 @@
 
             Timing.CallDelayed(0.1f, () =>
             {
-                if (PlayerExtensions.Assembly is not null)
+                if (player.GetOverallRoleType().RoleType == TypeSystem.Uncomplicated)
                 {
-                    Log.Debug("a");
-                    MethodInfo summonedCustomRoleGet = PlayerExtensions.SummonedCustomRole.GetMethod("Get", new Type[] { typeof(Player) });
-                    object ucrSumRole = summonedCustomRoleGet.Invoke(null, new object[] { player });
-                    if (ucrSumRole is not null)
+                    player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
+                    if (Config.NicknameConfig.ShowIntroText)
                     {
-                        player.OSetPlayerCustomInfoAndRoleName(string.Empty, ((OverallRoleType)ucrSumRole).GetName());
-                        if (!Config.NicknameConfig.ShowIntroText)
-                        {
-                            return;
-                        }
-
                         ShowIntro(player);
-                        return;
                     }
+
+                    return;
                 }
 
                 if (!player.GetCustomRoles().IsEmpty())
                 {
-                    if (!Config.NicknameConfig.ShowIntroText)
+                    if (Config.NicknameConfig.ShowIntroText)
                     {
-                        return;
+                        ShowIntro(player);
                     }
 
-                    ShowIntro(player);
                     return;
                 }
 
