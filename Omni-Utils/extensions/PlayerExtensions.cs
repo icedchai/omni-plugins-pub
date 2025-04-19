@@ -36,14 +36,14 @@ namespace Omni_Utils.Extensions
                 {
                     // Adds session variable omni_seed to make RNG consistent per-life. omni_seed is removed on death.
                     player.SessionVariables.Remove("omni_seed");
-                    seed = DateTime.Now.Millisecond + (DateTime.Now.Second * 20);
+                    seed = DateTime.Now.Millisecond * player.Id;
                     player.SessionVariables.Add("omni_seed", seed);
                     rng = new Random(seed);
                 }
             }
             else
             {
-                int seed = DateTime.Now.Millisecond + (DateTime.Now.Second * 20);
+                int seed = DateTime.Now.Millisecond * player.Id;
                 player.SessionVariables.Add("omni_seed", seed);
                 rng = new Random(seed);
             }
