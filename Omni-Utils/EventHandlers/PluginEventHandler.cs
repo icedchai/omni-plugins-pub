@@ -107,7 +107,12 @@
             {
                 if (player.GetOverallRoleType().RoleType == TypeSystem.Uncomplicated)
                 {
-                    player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
+
+                    if (!Config.RolenameConfig.IsEnabled)
+                    {
+                        player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
+                    }
+
                     if (Config.NicknameConfig.ShowIntroText)
                     {
                         ShowIntro(player);
