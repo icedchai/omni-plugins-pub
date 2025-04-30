@@ -125,7 +125,7 @@ namespace Omni_Utils.Extensions
             // Custom info
             // Jonny
             // Tutorial)
-            string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"<color=#FFFFFF></color>{customInfo}{Environment.NewLine}")}<color=#944710></color><color=#FFFFFF>{(player.HasCustomName ? $"{player.CustomName}</color><color=#944710>*</color>" : $"{player.Nickname}</color>")}{Environment.NewLine}{role}";
+            string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"<color=#FFFFFF></color>{customInfo}\n")}<color=#944710></color>{(player.HasCustomName ? $"{player.CustomName}<color=#944710>*</color>" : $"{player.Nickname}")}\n{role}";
 
             info = ProcessNickname(info, player);
             player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = info;
