@@ -39,7 +39,7 @@
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dependancies\EXILEDREF\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\EXILEDREF\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,11 +77,11 @@
       <HintPath>..\packages\ExMod.Exiled.9.6.0-beta7\lib\net48\LabApi.dll</HintPath>
     </Reference>
     <Reference Include="MapEditorReborn">
-      <HintPath>..\..\..\dependancies\MER\MapEditorReborn.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\MER\MapEditorReborn.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\dependancies\EXILEDREF\Mirror.dll</HintPath>
+      <HintPath>$(EXILED_REFERENCES)\EXILEDREF\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="NorthwoodLib, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ExMod.Exiled.9.6.0-beta7\lib\net48\NorthwoodLib.dll</HintPath>
