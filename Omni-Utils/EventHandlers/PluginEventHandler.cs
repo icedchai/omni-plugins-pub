@@ -9,6 +9,7 @@
     using CustomPlayerEffects;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
+    using Exiled.Events.Commands.Hub;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
     using MEC;
@@ -50,7 +51,6 @@
         public static string IntroGetter(ReferenceHub hub)
         {
             Player player = Player.Get(hub);
-
             string output = $"Your name is {player.CustomName}. You are {player.GetRoleName()}.";
             if (Config.UseRoleplayHeight)
             {
@@ -107,7 +107,12 @@
             {
                 if (player.GetOverallRoleType().RoleType == TypeSystem.Uncomplicated)
                 {
-                    player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
+
+                    if (Config.RolenameConfig.IsEnabled)
+                    {
+                        player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
+                    }
+
                     if (Config.NicknameConfig.ShowIntroText)
                     {
                         ShowIntro(player);

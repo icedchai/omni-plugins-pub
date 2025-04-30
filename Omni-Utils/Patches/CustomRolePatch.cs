@@ -1,6 +1,7 @@
 ﻿namespace Omni_Utils.Patches
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.CustomRoles.API;
     using Exiled.CustomRoles.API.Features;
     using Exiled.Events.EventArgs.Player;

@@ -36,14 +36,14 @@ namespace Omni_Utils.Extensions
                 {
                     // Adds session variable omni_seed to make RNG consistent per-life. omni_seed is removed on death.
                     player.SessionVariables.Remove("omni_seed");
-                    seed = DateTime.Now.Millisecond + (DateTime.Now.Second * 20);
+                    seed = DateTime.Now.Millisecond * player.Id;
                     player.SessionVariables.Add("omni_seed", seed);
                     rng = new Random(seed);
                 }
             }
             else
             {
-                int seed = DateTime.Now.Millisecond + (DateTime.Now.Second * 20);
+                int seed = DateTime.Now.Millisecond * player.Id;
                 player.SessionVariables.Add("omni_seed", seed);
                 rng = new Random(seed);
             }
@@ -125,7 +125,7 @@ namespace Omni_Utils.Extensions
             // Custom info
             // Jonny
             // Tutorial)
-            string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"<color=#FFFFFF></color>{customInfo}\n")}<color=#944710></color>{(player.HasCustomName ? $"{player.CustomName}<color=#944710>*</color>" : player.Nickname)}\n{role}";
+            string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"<color=#FFFFFF></color>{customInfo}\n")}<color=#944710></color>{(player.HasCustomName ? $"{player.CustomName}<color=#944710>*</color>" : $"{player.Nickname}")}\n{role}";
 
             info = ProcessNickname(info, player);
             player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = info;

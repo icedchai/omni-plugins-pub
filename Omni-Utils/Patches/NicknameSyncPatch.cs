@@ -20,6 +20,11 @@
         [HarmonyPatch("Network_customPlayerInfoString", MethodType.Setter)]
         public static bool CustomPlayerInfoPrefix(NicknameSync __instance, string value)
         {
+            if (!OmniUtilsPlugin.PluginInstance.Config.RolenameConfig.IsEnabled)
+            {
+                return true;
+            }
+
             if (value.Contains("<color=#944710></color>"))
             {
                 return true;
@@ -35,6 +40,11 @@
         [HarmonyPatch("Network_customPlayerInfoString", MethodType.Setter)]
         public static void CustomPlayerInfoPostfix(NicknameSync __instance, string value)
         {
+            if (!OmniUtilsPlugin.PluginInstance.Config.RolenameConfig.IsEnabled)
+            {
+                return;
+            }
+
             if (value.Contains("<color=#944710></color>"))
             {
                 return;
