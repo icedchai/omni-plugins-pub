@@ -8,7 +8,6 @@
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.Handlers;
-    using MapEditorReborn.API.Features.Objects;
     using MEC;
     using Omni_Utils.EventHandlers;
     using Omni_Utils.Patches;
