@@ -47,7 +47,7 @@
     </Reference>
     <Reference Include="ColdWaterLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ColdWaterLibrary\bin\Debug\ColdWaterLibrary.dll</HintPath>
+      <HintPath>..\..\ColdWaterLibrary\ColdWaterLibrary\bin\Debug\ColdWaterLibrary.dll</HintPath>
     </Reference>
     <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ExMod.Exiled.9.6.0-beta7\lib\net48\CommandSystem.Core.dll</HintPath>
@@ -75,9 +75,6 @@
     </Reference>
     <Reference Include="LabApi, Version=0.6.0.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\ExMod.Exiled.9.6.0-beta7\lib\net48\LabApi.dll</HintPath>
-    </Reference>
-    <Reference Include="MapEditorReborn">
-      <HintPath>$(EXILED_REFERENCES)\MER\MapEditorReborn.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -3,9 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using ColdWaterLibrary.Enums;
-    using ColdWaterLibrary.Extensions;
-    using ColdWaterLibrary.Types;
+    using ColdWaterLibrary.Features.Enums;
+    using ColdWaterLibrary.Features.Extensions;
+    using ColdWaterLibrary.Features.Wrappers;
     using CustomPlayerEffects;
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
