@@ -6,6 +6,7 @@ using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 
 using PlayerRoles;
+using Respawning;
 
 namespace Omni_Utils.Commands.QOL
 {
@@ -22,14 +23,16 @@ namespace Omni_Utils.Commands.QOL
             {
                 player.Role.Set(RoleTypeId.Tutorial);
             }
+
             Map.IsDecontaminationEnabled = false;
             Door.LockAll(999999,DoorLockType.AdminCommand);
-           
+
             response = "You have successfully setup!";
             return true;
         }
 
         public string Command { get; } = "setup";
+
         public string[] Aliases { get; } = new string[]
         {
             "oset",
@@ -39,6 +42,6 @@ namespace Omni_Utils.Commands.QOL
         };
 
         public string Description { get; } =
-            "Does all event setup actions automatically (roundlock, forcestart, all tutorials, lock doors)";
+            "Does all event setup actions automatically (roundlock, forcestart, all tutorials, lock doors, pause waves)";
     }
 }

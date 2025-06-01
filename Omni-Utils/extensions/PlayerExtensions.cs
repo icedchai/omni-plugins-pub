@@ -1,5 +1,5 @@
-﻿using ColdWaterLibrary.Extensions;
-using ColdWaterLibrary.Types;
+﻿using ColdWaterLibrary.Features.Extensions;
+using ColdWaterLibrary.Features.Wrappers;
 using Exiled.API.Features;
 using Exiled.Loader;
 using Omni_Utils.Customs;
@@ -82,6 +82,22 @@ namespace Omni_Utils.Extensions
                     player.SessionVariables.Add("omni_rank", rank);
                 }
             }
+
+            // helps keep name consistent across death
+            string namePlaceholder = player.SessionVariables.TryGetValue("omni_name", out object placeholder) && placeholder is string placeholderString && !string.IsNullOrWhiteSpace(placeholderString) ? placeholderString : OmniUtilsPlugin.PluginInstance.Config.NicknameConfig.DefaultNamePlaceholder;
+
+            foreach (RankGroup rankGroup in OmniUtilsPlugin.inconsistentReplacements)
+            {
+                if (namePlaceholder.Contains($"%{rankGroup.Name.ToLower()}%"))
+                {
+                    namePlaceholder = namePlaceholder.Replace($"%{rankGroup.Name}%", rankGroup.PossibleReplacements[rng.Next(rankGroup.PossibleReplacements.Count)]);
+                }
+            }
+
+            // helps keep name consistent across death
+            player.SessionVariables.Remove("omni_name");
+            player.SessionVariables.Add("omni_name", namePlaceholder);
+            nickname = nickname.Replace("%name%", namePlaceholder);
 
             // Applies the rank to the player's name when processing it.
             foreach (RankGroup rankGroup in OmniUtilsPlugin.consistentReplacements)

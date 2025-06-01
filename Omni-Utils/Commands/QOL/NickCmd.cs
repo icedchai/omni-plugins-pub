@@ -25,33 +25,38 @@ namespace Omni_Utils.Commands.QOL
                 response = "This command is currently disabled.";
                 return false;
             }
-            //This is a client-side command, created as an improvement upon a previous nickname command for players.
-            //The issues with the previous one became apparent when you had more than 24 characters in your nickname,
-            //or if you had more than three words in the argument.
+
+            // This is a client-side command, created as an improvement upon a previous nickname command for players.
+            // The issues with the previous one became apparent when you had more than 24 characters in your nickname,
+            // or if you had more than three words in the argument.
             Player player = Player.Get(sender);
             if (arguments.Count <= 0)
             {
                 response = "USAGE: nickname (NICK)" +
-                           "\n \nYou can use placeholders, for example %nick% to get your username, or %rank% to get your rank (or a randomly picked one, if you lack one), or" +
+                           "\n \nYou can use placeholders, for example %nick% to get your username, or %name% to get the last name you set or got, or %rank% to get your rank (or a randomly picked one, if you lack one), or" +
                            " you can use %division% to get your MTF division, if you have one." +
                            " You can use %4digit% or %1digit% to get random numbers, if you wish. ";
                 return false;
             }
+
             if (player is null)
             {
                 response = "You must exist to run this command!";
                 return false;
             }
-            //The for loop is a bit fucked, but I don't care. This loop will cycle through every word in the command, rather than
-            //only the first three.
+
+            // The for loop is a bit fucked, but I don't care. This loop will cycle through every word in the command, rather than
+            // only the first three.
             string name = arguments.At(0);
             for (int i = 1; i < arguments.Count; i++)
             {
                 name += $" {arguments.At(i)}";
             }
 
-            //Player.CustomName is the nickname, not Player.Nickname, which is their username.
+            // Player.CustomName is the nickname, not Player.Nickname, which is their username.
             player.CustomName = name;
+            player.SessionVariables.Remove("omni_name");
+            player.SessionVariables.Add("omni_name", name);
             Log.Info($"{player.Nickname} ({player.UserId}) set nickname to {name}");
             response = $"Set your nickname to {player.CustomName}.";
             return true;
