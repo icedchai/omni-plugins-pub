@@ -4,7 +4,7 @@ using CommandSystem.Commands.RemoteAdmin;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Doors;
-
+using Exiled.API.Features.Waves;
 using PlayerRoles;
 using Respawning;
 
@@ -22,6 +22,11 @@ namespace Omni_Utils.Commands.QOL
             foreach (Player player in Player.List)
             {
                 player.Role.Set(RoleTypeId.Tutorial);
+            }
+
+            foreach (TimedWave timedWave in TimedWave.GetTimedWaves())
+            {
+                timedWave.Timer.Pause(999999);
             }
 
             Map.IsDecontaminationEnabled = false;

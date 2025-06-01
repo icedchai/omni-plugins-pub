@@ -105,6 +105,7 @@
   <ItemGroup>
     <Compile Include="Commands\QOL\HeightCmd.cs" />
     <Compile Include="Commands\QOL\NickCmd.cs" />
+    <Compile Include="Commands\QOL\RoleNameClientCmd.cs" />
     <Compile Include="Commands\QOL\RoleNameCmd.cs" />
     <Compile Include="Commands\SetupCommandOmni.cs" />
     <Compile Include="Configs\Config.cs" />
