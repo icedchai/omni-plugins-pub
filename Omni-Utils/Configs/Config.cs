@@ -15,6 +15,9 @@
         [Description("Indicates debug mode enabled or not")]
         public bool Debug { get; set; } = false;
 
+        public bool DisableMiniWaves { get; set; } = false;
+        public bool DisableRadioDrain { get; set; } = true;
+
         [Description("Amount of stamina to consume when jumping. Set to 0 to disable (especially if other plugin already does this).")]
         public float StaminaUseOnJump { get; set; } = 30;
         [Description("Roleplay Height features include randomized height and a player-command to change it")]

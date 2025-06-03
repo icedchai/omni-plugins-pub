@@ -75,27 +75,24 @@
         private void RegisterEvents()
         {
             eventHandler = new PluginEventHandler();
-            if (Config.StaminaUseOnJump>0)
-            {
-                Player.Jumping += eventHandler.OnPlayerJump;
-            }
-
+            Player.Jumping += eventHandler.OnPlayerJump;
             Player.Dying += eventHandler.OnPlayerDeath;
             Player.ChangingNickname += eventHandler.OnChangingNickname;
             Player.ChangingRole += eventHandler.OnChangingRole;
+            Player.UsingRadioBattery += eventHandler.OnRadioItemUsage;
+            Item.UsingRadioPickupBattery += eventHandler.OnRadioPickupUsage;
+            Server.RespawningTeam += eventHandler.OnSpawnWave;
         }
 
         private void UnregisterEvents()
         {
-
-            if (Config.StaminaUseOnJump > 0)
-            {
-                Player.Jumping -= eventHandler.OnPlayerJump;
-            }
-
+            Player.Jumping -= eventHandler.OnPlayerJump;
             Player.Dying -= eventHandler.OnPlayerDeath;
             Player.ChangingNickname -= eventHandler.OnChangingNickname;
             Player.ChangingRole -= eventHandler.OnChangingRole;
+            Player.UsingRadioBattery -= eventHandler.OnRadioItemUsage;
+            Item.UsingRadioPickupBattery -= eventHandler.OnRadioPickupUsage;
+            Server.RespawningTeam -= eventHandler.OnSpawnWave;
             eventHandler = null;
 
         }

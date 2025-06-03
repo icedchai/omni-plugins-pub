@@ -10,8 +10,10 @@
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
     using Exiled.Events.Commands.Hub;
+    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
     using MEC;
     using Omni_Utils.Extensions;
     using PlayerRoles;
@@ -239,6 +241,24 @@
             if (Config.NicknameConfig.ResetNamesOnMortality)
             {
                 e.Player.CustomName = null;
+            }
+        }
+
+        public void OnRadioItemUsage(UsingRadioBatteryEventArgs e)
+        {
+            e.IsAllowed = !Config.DisableRadioDrain;
+        }
+
+        public void OnRadioPickupUsage(UsingRadioPickupBatteryEventArgs e)
+        {
+            e.IsAllowed = !Config.DisableRadioDrain;
+        }
+
+        public void OnSpawnWave(RespawningTeamEventArgs e)
+        {
+            if (e.Wave.IsMiniWave && Config.DisableMiniWaves)
+            {
+                e.IsAllowed = false;
             }
         }
     }

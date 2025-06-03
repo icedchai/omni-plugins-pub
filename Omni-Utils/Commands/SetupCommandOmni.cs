@@ -17,7 +17,7 @@ namespace Omni_Utils.Commands.QOL
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            RoundSummary.RoundLock = true; 
+            RoundSummary.RoundLock = true;
             if(!Round.IsStarted) Round.Start();
             foreach (Player player in Player.List)
             {
