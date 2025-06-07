@@ -53,7 +53,7 @@
         public static string IntroGetter(ReferenceHub hub)
         {
             Player player = Player.Get(hub);
-            string output = $"Your name is {player.CustomName}. You are {player.GetRoleName()}.";
+            string output = $"\n\nYour name is {player.CustomName}. You are {player.GetRoleName()}.";
             if (Config.UseRoleplayHeight)
             {
                 output += $"\nYour height is {Math.Round(1.6f * player.Scale.y, 1)} meters.";
@@ -184,7 +184,7 @@
                     return;
                 }
 
-                player.ShowHint(IntroGetter(player.ReferenceHub), 10);
+                player.ShowHint(IntroGetter(player.ReferenceHub), 20);
                 // Show hint
                 /*DisplayCore core = DisplayCore.Get(player.ReferenceHub);
                 Display display = new (core);
@@ -260,6 +260,17 @@
             {
                 e.IsAllowed = false;
             }
+        }
+
+        public void OnRoundStarted()
+        {
+            Timing.RunCoroutine(Announcement());
+        }
+
+        private IEnumerator<float> Announcement()
+        {
+            yield return Timing.WaitForSeconds(Random.Range(Config.PeriodicAnnouncementMinimumDelay, Config.PeriodicAnnouncementMaximumDelay));
+            Cassie.Message(Config.PeriodicAnnouncements.RandomItem());
         }
     }
 }

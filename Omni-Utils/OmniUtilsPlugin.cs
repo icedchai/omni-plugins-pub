@@ -82,6 +82,7 @@
             Player.UsingRadioBattery += eventHandler.OnRadioItemUsage;
             Item.UsingRadioPickupBattery += eventHandler.OnRadioPickupUsage;
             Server.RespawningTeam += eventHandler.OnSpawnWave;
+            Server.RoundStarted += eventHandler.OnRoundStarted;
         }
 
         private void UnregisterEvents()
@@ -93,6 +94,7 @@
             Player.UsingRadioBattery -= eventHandler.OnRadioItemUsage;
             Item.UsingRadioPickupBattery -= eventHandler.OnRadioPickupUsage;
             Server.RespawningTeam -= eventHandler.OnSpawnWave;
+            Server.RoundStarted -= eventHandler.OnRoundStarted;
             eventHandler = null;
 
         }

@@ -15,7 +15,14 @@
         [Description("Indicates debug mode enabled or not")]
         public bool Debug { get; set; } = false;
 
+        public float PeriodicAnnouncementMinimumDelay { get; set; } = 10f;
+
+        public float PeriodicAnnouncementMaximumDelay { get; set; } = 10f;
+
+        public List<string> PeriodicAnnouncements { get; set; } = new List<string>();
+
         public bool DisableMiniWaves { get; set; } = false;
+
         public bool DisableRadioDrain { get; set; } = true;
 
         [Description("Amount of stamina to consume when jumping. Set to 0 to disable (especially if other plugin already does this).")]
