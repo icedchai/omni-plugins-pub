@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using ColdWaterLibrary.Features.Roles;
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
     using PlayerRoles;
@@ -20,6 +21,8 @@
         public float PeriodicAnnouncementMaximumDelay { get; set; } = 10f;
 
         public List<string> PeriodicAnnouncements { get; set; } = new List<string>();
+
+        public List<ColdWaterRole> ColdWaterRoles { get; set; } = new List<ColdWaterRole>() { new ColdWaterRole() };
 
         public bool DisableMiniWaves { get; set; } = false;
 

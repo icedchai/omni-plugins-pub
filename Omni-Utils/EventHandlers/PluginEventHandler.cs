@@ -269,8 +269,11 @@
 
         private IEnumerator<float> Announcement()
         {
-            yield return Timing.WaitForSeconds(Random.Range(Config.PeriodicAnnouncementMinimumDelay, Config.PeriodicAnnouncementMaximumDelay));
-            Cassie.Message(Config.PeriodicAnnouncements.RandomItem());
+            while (!Round.IsEnded)
+            {
+                yield return Timing.WaitForSeconds(Random.Range(Config.PeriodicAnnouncementMinimumDelay, Config.PeriodicAnnouncementMaximumDelay));
+                Cassie.Message(Config.PeriodicAnnouncements.RandomItem());
+            }
         }
     }
 }

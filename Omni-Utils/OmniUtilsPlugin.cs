@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using ColdWaterLibrary.Features.Roles;
     using Customs;
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -59,6 +60,11 @@
             // RueIMain.EnsureInit();
             consistentReplacements = consistentReplacements.Concat(Config.NicknameConfig.RankGroups).ToList();
             inconsistentReplacements = inconsistentReplacements.Concat(Config.NicknameConfig.RandomReplacements).ToList();
+
+            foreach (var role in Config.ColdWaterRoles)
+            {
+                ColdWaterRoleManager.Singleton.RegisterRole(role);
+            }
 
             //Look under MyPatcher.cs in /Patches
             MyPatcher.DoPatching();

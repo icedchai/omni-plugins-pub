@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Omni_Utils.Commands.QOL
 {
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(ClientCommandHandler))]
     public class RoleNameClientCmd : ICommand
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)

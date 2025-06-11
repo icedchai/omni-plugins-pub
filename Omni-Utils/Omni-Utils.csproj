@@ -103,6 +103,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ColdWaterRoleAddCmd.cs" />
     <Compile Include="Commands\QOL\HeightCmd.cs" />
     <Compile Include="Commands\QOL\NickCmd.cs" />
     <Compile Include="Commands\QOL\RoleNameClientCmd.cs" />
