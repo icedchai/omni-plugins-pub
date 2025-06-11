@@ -22,8 +22,6 @@
 
         public List<string> PeriodicAnnouncements { get; set; } = new List<string>();
 
-        public List<ColdWaterRole> ColdWaterRoles { get; set; } = new List<ColdWaterRole>() { new ColdWaterRole() };
-
         public bool DisableMiniWaves { get; set; } = false;
 
         public bool DisableRadioDrain { get; set; } = true;

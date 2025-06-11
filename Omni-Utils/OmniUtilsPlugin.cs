@@ -61,11 +61,6 @@
             consistentReplacements = consistentReplacements.Concat(Config.NicknameConfig.RankGroups).ToList();
             inconsistentReplacements = inconsistentReplacements.Concat(Config.NicknameConfig.RandomReplacements).ToList();
 
-            foreach (var role in Config.ColdWaterRoles)
-            {
-                ColdWaterRoleManager.Singleton.RegisterRole(role);
-            }
-
             //Look under MyPatcher.cs in /Patches
             MyPatcher.DoPatching();
             RegisterEvents();
