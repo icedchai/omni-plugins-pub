@@ -1,5 +1,6 @@
 ﻿using CommandSystem;
 using Exiled.API.Features;
+using Omni_Utils.Configs;
 using Omni_Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -12,22 +13,21 @@ namespace Omni_Utils.Commands.QOL
     [CommandHandler(typeof(ClientCommandHandler))]
     public class RoleNameClientCmd : ICommand
     {
+        private static Translation Translation => OmniUtilsPlugin.PluginInstance.Translation;
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
 
             if (player is null)
             {
-                response = "You must exist to run this command.";
+                response = Translation.NullPlayerError;
                 return false;
             }
 
             if (arguments.Count == 0)
             {
-                response = "USAGE: rolename (NICK)" +
-                           "\n \nYou can use placeholders, for example %nick% to get your username, or %name% to get the last name you set or got, or %rank% to get your rank (or a randomly picked one, if you lack one), or" +
-                           " you can use %division% to get your MTF division, if you have one." +
-                           " You can use %4digit% or %1digit% to get random numbers, if you wish. ";
+                response = Translation.RolenameTutorial;
                 return false;
             }
 
@@ -38,7 +38,7 @@ namespace Omni_Utils.Commands.QOL
             }
 
             player.OSetPlayerCustomInfoAndRoleName(player.GetCustomInfo(), role);
-            response = $"Set role name to {role}";
+            response = string.Format(Translation.RolenameSuccess, role);
             return true;
         }
 
@@ -46,6 +46,6 @@ namespace Omni_Utils.Commands.QOL
 
         public string[] Aliases { get; } = new string[] { "role", "setrole" };
 
-        public string Description { get; } = "Set your role name (text appearing below your username)";
+        public string Description { get; } = Translation.RolenameDescription;
     }
 }

@@ -110,6 +110,7 @@
     <Compile Include="Commands\SetupCommandOmni.cs" />
     <Compile Include="Configs\Config.cs" />
     <Compile Include="Configs\NicknameConfig.cs" />
+    <Compile Include="Configs\Translation.cs" />
     <Compile Include="Customs\RankGroup.cs" />
     <Compile Include="EventHandlers\PluginEventHandler.cs" />
     <Compile Include="Configs\RolenameConfig.cs" />

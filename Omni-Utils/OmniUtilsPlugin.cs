@@ -10,6 +10,7 @@
     using Exiled.API.Features;
     using Exiled.Events.Handlers;
     using MEC;
+    using Omni_Utils.Configs;
     using Omni_Utils.EventHandlers;
     using Omni_Utils.Patches;
     
@@ -21,7 +22,7 @@
     using Server = Exiled.Events.Handlers.Server;
 
     /// <inheritdoc/>
-    public class OmniUtilsPlugin : Plugin<Config>
+    public class OmniUtilsPlugin : Plugin<Config, Translation>
     {
         /// <summary>
         /// The singleton.
@@ -97,7 +98,6 @@
             Server.RespawningTeam -= eventHandler.OnSpawnWave;
             Server.RoundStarted -= eventHandler.OnRoundStarted;
             eventHandler = null;
-
         }
     }
 }

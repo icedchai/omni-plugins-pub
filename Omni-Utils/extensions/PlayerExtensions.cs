@@ -17,11 +17,6 @@ namespace Omni_Utils.Extensions
 
     public static class PlayerExtensions
     {
-        public static Assembly Assembly => Loader.Plugins.FirstOrDefault(p => p.Name is "UncomplicatedCustomRoles")?.Assembly;
-
-        public static Type PlayerExtension => Assembly.GetType("UncomplicatedCustomRoles.Extensions.PlayerExtension");
-
-        public static Type SummonedCustomRole => Assembly.GetType("UncomplicatedCustomRoles.API.Features.SummonedCustomRole");
 
         public static string ProcessNickname(string nickname, Player player)
         {
@@ -117,6 +112,9 @@ namespace Omni_Utils.Extensions
                 }
             }
 
+            // Ensures regex issues related to brackets do not crop up.
+            nickname = nickname.Replace('[', '(').Replace(']', ')');
+
             return nickname;
         }
 
@@ -132,7 +130,7 @@ namespace Omni_Utils.Extensions
 
         public static void OSetPlayerCustomInfoAndRoleName(this Player player, string customInfo, string role)
         {
-            player.ReferenceHub.nicknameSync.Network_playerInfoToShow |= PlayerInfoArea.CustomInfo;
+            player.ReferenceHub.nicknameSync.Network_playerInfoToShow &= PlayerInfoArea.CustomInfo;
             player.ReferenceHub.nicknameSync.Network_playerInfoToShow &= ~(PlayerInfoArea.Role | PlayerInfoArea.Nickname);
 
             // CustomInfo supports line breaks, so I have the "customInfo", then the CustomName, then the rolename
@@ -144,6 +142,13 @@ namespace Omni_Utils.Extensions
             string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"<color=#FFFFFF></color>{customInfo}\n")}<color=#944710></color>{(player.HasCustomName ? $"{player.CustomName}<color=#944710>*</color>" : $"{player.Nickname}")}\n{role}";
 
             info = ProcessNickname(info, player);
+
+            if (!NicknameSync.ValidateCustomInfo(info, out _))
+            {
+                player.ReferenceHub.nicknameSync.Network_playerInfoToShow &= PlayerInfoArea.Role | PlayerInfoArea.Nickname;
+                return;
+            }
+
             player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = info;
         }
 

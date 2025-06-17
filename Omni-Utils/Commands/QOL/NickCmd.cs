@@ -12,17 +12,21 @@ namespace Omni_Utils.Commands.QOL
     //Documented November 16th 2024
     public class NickCmd : ICommand
     {
+        private static Translation Translation => OmniUtilsPlugin.PluginInstance.Translation;
+
         public string Command { get; } = "nickname";
 
         public string[] Aliases { get; } = new[] { "nick", "name", "rename" };
 
-        public string Description { get; } = "Set your nickname";
+        public string Description { get; } = Translation.NicknameDescription;
+
         static Config config => OmniUtilsPlugin.PluginInstance.Config;
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!config.NicknameConfig.IsEnabled)
             {
-                response = "This command is currently disabled.";
+                response = Translation.DisabledCommand;
                 return false;
             }
 
@@ -32,16 +36,13 @@ namespace Omni_Utils.Commands.QOL
             Player player = Player.Get(sender);
             if (arguments.Count <= 0)
             {
-                response = "USAGE: nickname (NICK)" +
-                           "\n \nYou can use placeholders, for example %nick% to get your username, or %name% to get the last name you set or got, or %rank% to get your rank (or a randomly picked one, if you lack one), or" +
-                           " you can use %division% to get your MTF division, if you have one." +
-                           " You can use %4digit% or %1digit% to get random numbers, if you wish. ";
+                response = Translation.NicknameTutorial;
                 return false;
             }
 
             if (player is null)
             {
-                response = "You must exist to run this command!";
+                response = Translation.NullPlayerError;
                 return false;
             }
 
@@ -58,7 +59,7 @@ namespace Omni_Utils.Commands.QOL
             player.SessionVariables.Remove("omni_name");
             player.SessionVariables.Add("omni_name", name);
             Log.Info($"{player.Nickname} ({player.UserId}) set nickname to {name}");
-            response = $"Set your nickname to {player.CustomName}.";
+            response = string.Format(Translation.NicknameSuccess, player.CustomName);
             return true;
         }
     }

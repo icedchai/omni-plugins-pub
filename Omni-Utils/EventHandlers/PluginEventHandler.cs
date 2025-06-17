@@ -53,11 +53,7 @@
         public static string IntroGetter(ReferenceHub hub)
         {
             Player player = Player.Get(hub);
-            string output = $"\n\nYour name is {player.CustomName}. You are {player.GetRoleName()}.";
-            if (Config.UseRoleplayHeight)
-            {
-                output += $"\nYour height is {Math.Round(1.6f * player.Scale.y, 1)} meters.";
-            }
+            string output = string.Format(OmniUtilsPlugin.PluginInstance.Translation.IntroText, player.CustomName, player.GetRoleName(), Math.Round(1.6f * player.Scale.y, 1));
 
             return output;
         }
@@ -100,31 +96,20 @@
 
             // Sets random height if the height is appropriate
             if (player.Scale.y < 1.11 && player.Scale.y > 0.74
-                && Config.UseRoleplayHeight)
+                && Config.UseRandomizedHeight)
             {
                 player.Scale = Vector3.one * Random.Range(Config.HeightMin, Config.HeightMax);
             }
 
             Timing.CallDelayed(0.1f, () =>
             {
-                if (player.GetOverallRoleType().RoleType == TypeSystem.Uncomplicated)
+                if (player.GetOverallRoleType().RoleType != TypeSystem.BaseGame)
                 {
-
                     if (Config.RolenameConfig.IsEnabled)
                     {
                         player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
                     }
 
-                    if (Config.NicknameConfig.ShowIntroText)
-                    {
-                        ShowIntro(player);
-                    }
-
-                    return;
-                }
-
-                if (!player.GetCustomRoles().IsEmpty())
-                {
                     if (Config.NicknameConfig.ShowIntroText)
                     {
                         ShowIntro(player);
@@ -156,19 +141,18 @@
                         player.InfoArea |= PlayerInfoArea.Nickname | PlayerInfoArea.Role;
                     }
                 }
+
+                if (Config.NicknameConfig.ShowIntroText)
+                {
+                    ShowIntro(player);
+                    return;
+                }
             });
 
             if (!e.NewRole.IsHuman())
             {
                 return;
             }
-
-            if (!Config.NicknameConfig.ShowIntroText)
-            {
-                return;
-            }
-
-            ShowIntro(player);
         }
 
         /// <summary>
@@ -264,16 +248,6 @@
 
         public void OnRoundStarted()
         {
-            Timing.RunCoroutine(Announcement());
-        }
-
-        private IEnumerator<float> Announcement()
-        {
-            while (!Round.IsEnded)
-            {
-                yield return Timing.WaitForSeconds(Random.Range(Config.PeriodicAnnouncementMinimumDelay, Config.PeriodicAnnouncementMaximumDelay));
-                Cassie.Message(Config.PeriodicAnnouncements.RandomItem());
-            }
         }
     }
 }
