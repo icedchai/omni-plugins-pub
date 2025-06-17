@@ -39,7 +39,7 @@
         public override string Prefix => "omni-utils";
 
         /// <inheritdoc/>
-        public override Version Version => new (2, 0, 2);
+        public override Version Version => new (2, 0, 3);
 
         /// <summary>
         /// The plugin event handler instance.
