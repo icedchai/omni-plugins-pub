@@ -42,9 +42,9 @@ namespace Omni_Utils.Commands.QOL
             return true;
         }
 
-        public string Command { get; } = "rolename";
+        public string Command { get; } = Translation.Rolename;
 
-        public string[] Aliases { get; } = new string[] { "role", "setrole" };
+        public string[] Aliases { get; } = Translation.RolenameAliases;
 
         public string Description { get; } = Translation.RolenameDescription;
     }

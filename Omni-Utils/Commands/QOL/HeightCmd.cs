@@ -11,9 +11,9 @@ namespace Omni_Utils.Commands.QOL
     //Created November 28th 2024
     public class HeightCmd : ICommand
     {
-        public string Command { get; } = "height";
+        public string Command { get; } = Translation.HeightCommand;
 
-        public string[] Aliases { get; } = new[] { "scale" };
+        public string[] Aliases { get; } = Translation.HeightCommandAliases;
 
         public string Description { get; } = Translation.HeightCommandDescription;
 
@@ -45,7 +45,7 @@ namespace Omni_Utils.Commands.QOL
             }
             if(!float.TryParse(arguments.Array[1], out float height))
             {
-                response = "Invalid float.";
+                response = Translation.InvalidInput;
                 return false;
             }
 

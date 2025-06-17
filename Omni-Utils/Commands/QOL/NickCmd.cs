@@ -14,9 +14,9 @@ namespace Omni_Utils.Commands.QOL
     {
         private static Translation Translation => OmniUtilsPlugin.PluginInstance.Translation;
 
-        public string Command { get; } = "nickname";
+        public string Command { get; } = Translation.Nickname;
 
-        public string[] Aliases { get; } = new[] { "nick", "name", "rename" };
+        public string[] Aliases { get; } = Translation.NicknameAliases;
 
         public string Description { get; } = Translation.NicknameDescription;
 
