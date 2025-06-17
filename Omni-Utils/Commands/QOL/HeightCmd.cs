@@ -15,41 +15,47 @@ namespace Omni_Utils.Commands.QOL
 
         public string[] Aliases { get; } = new[] { "scale" };
 
-        public string Description { get; } = $"Set your height, anywhere between {config.HeightMin} and {config.HeightMax}.";
+        public string Description { get; } = Translation.HeightCommandDescription;
+
+        private static Translation Translation => OmniUtilsPlugin.PluginInstance.Translation;
 
         private static Config config => OmniUtilsPlugin.PluginInstance.Config;
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
-            if(!config.UseRoleplayHeight)
+            if(!config.AllowHeightChange)
             {
-                response = "This command is currently disabled.";
+                response = Translation.DisabledCommand;
                 return false;
             }
-            if (arguments.Count < 1)
+            if (arguments.Count == 0)
             {
-                response = $"Usage: height (NUMBER BETWEEN {config.HeightMin} and {config.HeightMax})";
+                response = string.Format(Translation.HeightCommandTutorial, config.HeightChangeMin, config.HeightChangeMax);
                 return false;
+            }
+            if (player is null)
+            {
+                response = Translation.NullPlayerError;
             }
             if (player.Scale.y < config.HeightMin-0.01f || player.Scale.y > config.HeightMax+0.01f)
             {
-                response = $"Your height must be between {config.HeightMin} and {config.HeightMax} in order to use this command.";
+                response = string.Format(Translation.HeightCommandHeightOutOfRange, config.HeightChangeMin, config.HeightChangeMax);
                 return false;
             }
             if(!float.TryParse(arguments.Array[1], out float height))
             {
-                response = "Invalid float! Please enter a valid number.";
+                response = "Invalid float.";
                 return false;
             }
 
             if (height < config.HeightMin - 0.01f || height > config.HeightMax + 0.01f)
             {
-                response = $"Invalid height! Please enter a number between {config.HeightMin} and {config.HeightMax}.";
+                response = string.Format(Translation.HeightCommandInputOutOfRange, config.HeightChangeMin, config.HeightChangeMax);
                 return false;
             }
             player.Scale=Vector3.one*height;
-            response = $"Height set to {height}";
+            response = string.Format(Translation.HeightCommandSuccess, height);
             return true;
         }
     }

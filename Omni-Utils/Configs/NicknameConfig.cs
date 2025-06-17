@@ -17,6 +17,8 @@ namespace Omni_Utils.Configs
         public bool IsEnabled { get; set; } = true;
         [Description("Whether to show the hint to a player telling them their nickname, and role name.")]
         public bool ShowIntroText { get; set; } = true;
+
+        public string DefaultNamePlaceholder { get; set; } = "%firstname_white% %surname_white%";
         [Description("Reset nicknames after death.")]
         public bool ResetNamesOnMortality { get; set; } = true;
         public Dictionary<RoleTypeId, string> RoleNicknames { get; set; } = new Dictionary<RoleTypeId, string> {

@@ -4,11 +4,13 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using ColdWaterLibrary.Features.Roles;
     using Customs;
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.Handlers;
     using MEC;
+    using Omni_Utils.Configs;
     using Omni_Utils.EventHandlers;
     using Omni_Utils.Patches;
     
@@ -20,7 +22,7 @@
     using Server = Exiled.Events.Handlers.Server;
 
     /// <inheritdoc/>
-    public class OmniUtilsPlugin : Plugin<Config>
+    public class OmniUtilsPlugin : Plugin<Config, Translation>
     {
         /// <summary>
         /// The singleton.
@@ -75,29 +77,27 @@
         private void RegisterEvents()
         {
             eventHandler = new PluginEventHandler();
-            if (Config.StaminaUseOnJump>0)
-            {
-                Player.Jumping += eventHandler.OnPlayerJump;
-            }
-
+            Player.Jumping += eventHandler.OnPlayerJump;
             Player.Dying += eventHandler.OnPlayerDeath;
             Player.ChangingNickname += eventHandler.OnChangingNickname;
             Player.ChangingRole += eventHandler.OnChangingRole;
+            Player.UsingRadioBattery += eventHandler.OnRadioItemUsage;
+            Item.UsingRadioPickupBattery += eventHandler.OnRadioPickupUsage;
+            Server.RespawningTeam += eventHandler.OnSpawnWave;
+            Server.RoundStarted += eventHandler.OnRoundStarted;
         }
 
         private void UnregisterEvents()
         {
-
-            if (Config.StaminaUseOnJump > 0)
-            {
-                Player.Jumping -= eventHandler.OnPlayerJump;
-            }
-
+            Player.Jumping -= eventHandler.OnPlayerJump;
             Player.Dying -= eventHandler.OnPlayerDeath;
             Player.ChangingNickname -= eventHandler.OnChangingNickname;
             Player.ChangingRole -= eventHandler.OnChangingRole;
+            Player.UsingRadioBattery -= eventHandler.OnRadioItemUsage;
+            Item.UsingRadioPickupBattery -= eventHandler.OnRadioPickupUsage;
+            Server.RespawningTeam -= eventHandler.OnSpawnWave;
+            Server.RoundStarted -= eventHandler.OnRoundStarted;
             eventHandler = null;
-
         }
     }
 }

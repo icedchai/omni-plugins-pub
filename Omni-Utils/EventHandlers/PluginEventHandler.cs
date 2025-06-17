@@ -10,8 +10,10 @@
     using Exiled.API.Features;
     using Exiled.CustomRoles.API;
     using Exiled.Events.Commands.Hub;
+    using Exiled.Events.EventArgs.Item;
     using Exiled.Events.EventArgs.Map;
     using Exiled.Events.EventArgs.Player;
+    using Exiled.Events.EventArgs.Server;
     using MEC;
     using Omni_Utils.Extensions;
     using PlayerRoles;
@@ -51,11 +53,7 @@
         public static string IntroGetter(ReferenceHub hub)
         {
             Player player = Player.Get(hub);
-            string output = $"Your name is {player.CustomName}. You are {player.GetRoleName()}.";
-            if (Config.UseRoleplayHeight)
-            {
-                output += $"\nYour height is {Math.Round(1.6f * player.Scale.y, 1)} meters.";
-            }
+            string output = string.Format(OmniUtilsPlugin.PluginInstance.Translation.IntroText, player.CustomName, player.GetRoleName(), Math.Round(1.6f * player.Scale.y, 1));
 
             return output;
         }
@@ -98,31 +96,20 @@
 
             // Sets random height if the height is appropriate
             if (player.Scale.y < 1.11 && player.Scale.y > 0.74
-                && Config.UseRoleplayHeight)
+                && Config.UseRandomizedHeight)
             {
                 player.Scale = Vector3.one * Random.Range(Config.HeightMin, Config.HeightMax);
             }
 
             Timing.CallDelayed(0.1f, () =>
             {
-                if (player.GetOverallRoleType().RoleType == TypeSystem.Uncomplicated)
+                if (player.GetOverallRoleType().RoleType != TypeSystem.BaseGame)
                 {
-
                     if (Config.RolenameConfig.IsEnabled)
                     {
                         player.OSetPlayerCustomInfoAndRoleName(string.Empty, player.GetOverallRoleType().GetName());
                     }
 
-                    if (Config.NicknameConfig.ShowIntroText)
-                    {
-                        ShowIntro(player);
-                    }
-
-                    return;
-                }
-
-                if (!player.GetCustomRoles().IsEmpty())
-                {
                     if (Config.NicknameConfig.ShowIntroText)
                     {
                         ShowIntro(player);
@@ -154,19 +141,18 @@
                         player.InfoArea |= PlayerInfoArea.Nickname | PlayerInfoArea.Role;
                     }
                 }
+
+                if (Config.NicknameConfig.ShowIntroText)
+                {
+                    ShowIntro(player);
+                    return;
+                }
             });
 
             if (!e.NewRole.IsHuman())
             {
                 return;
             }
-
-            if (!Config.NicknameConfig.ShowIntroText)
-            {
-                return;
-            }
-
-            ShowIntro(player);
         }
 
         /// <summary>
@@ -182,7 +168,7 @@
                     return;
                 }
 
-                player.ShowHint(IntroGetter(player.ReferenceHub), 10);
+                player.ShowHint(IntroGetter(player.ReferenceHub), 20);
                 // Show hint
                 /*DisplayCore core = DisplayCore.Get(player.ReferenceHub);
                 Display display = new (core);
@@ -240,6 +226,28 @@
             {
                 e.Player.CustomName = null;
             }
+        }
+
+        public void OnRadioItemUsage(UsingRadioBatteryEventArgs e)
+        {
+            e.IsAllowed = !Config.DisableRadioDrain;
+        }
+
+        public void OnRadioPickupUsage(UsingRadioPickupBatteryEventArgs e)
+        {
+            e.IsAllowed = !Config.DisableRadioDrain;
+        }
+
+        public void OnSpawnWave(RespawningTeamEventArgs e)
+        {
+            if (e.Wave.IsMiniWave && Config.DisableMiniWaves)
+            {
+                e.IsAllowed = false;
+            }
+        }
+
+        public void OnRoundStarted()
+        {
         }
     }
 }

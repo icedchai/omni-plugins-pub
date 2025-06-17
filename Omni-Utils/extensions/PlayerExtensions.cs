@@ -1,5 +1,5 @@
-﻿using ColdWaterLibrary.Extensions;
-using ColdWaterLibrary.Types;
+﻿using ColdWaterLibrary.Features.Extensions;
+using ColdWaterLibrary.Features.Wrappers;
 using Exiled.API.Features;
 using Exiled.Loader;
 using Omni_Utils.Customs;
@@ -17,11 +17,6 @@ namespace Omni_Utils.Extensions
 
     public static class PlayerExtensions
     {
-        public static Assembly Assembly => Loader.Plugins.FirstOrDefault(p => p.Name is "UncomplicatedCustomRoles")?.Assembly;
-
-        public static Type PlayerExtension => Assembly.GetType("UncomplicatedCustomRoles.Extensions.PlayerExtension");
-
-        public static Type SummonedCustomRole => Assembly.GetType("UncomplicatedCustomRoles.API.Features.SummonedCustomRole");
 
         public static string ProcessNickname(string nickname, Player player)
         {
@@ -83,6 +78,22 @@ namespace Omni_Utils.Extensions
                 }
             }
 
+            // helps keep name consistent across death
+            string namePlaceholder = player.SessionVariables.TryGetValue("omni_name", out object placeholder) && placeholder is string placeholderString && !string.IsNullOrWhiteSpace(placeholderString) ? placeholderString : OmniUtilsPlugin.PluginInstance.Config.NicknameConfig.DefaultNamePlaceholder;
+
+            foreach (RankGroup rankGroup in OmniUtilsPlugin.inconsistentReplacements)
+            {
+                if (namePlaceholder.Contains($"%{rankGroup.Name.ToLower()}%"))
+                {
+                    namePlaceholder = namePlaceholder.Replace($"%{rankGroup.Name}%", rankGroup.PossibleReplacements[rng.Next(rankGroup.PossibleReplacements.Count)]);
+                }
+            }
+
+            // helps keep name consistent across death
+            player.SessionVariables.Remove("omni_name");
+            player.SessionVariables.Add("omni_name", namePlaceholder);
+            nickname = nickname.Replace("%name%", namePlaceholder);
+
             // Applies the rank to the player's name when processing it.
             foreach (RankGroup rankGroup in OmniUtilsPlugin.consistentReplacements)
             {
@@ -101,6 +112,9 @@ namespace Omni_Utils.Extensions
                 }
             }
 
+            // Ensures regex issues related to brackets do not crop up.
+            nickname = nickname.Replace('[', '(').Replace(']', ')');
+
             return nickname;
         }
 
@@ -116,7 +130,7 @@ namespace Omni_Utils.Extensions
 
         public static void OSetPlayerCustomInfoAndRoleName(this Player player, string customInfo, string role)
         {
-            player.ReferenceHub.nicknameSync.Network_playerInfoToShow |= PlayerInfoArea.CustomInfo;
+            player.ReferenceHub.nicknameSync.Network_playerInfoToShow &= PlayerInfoArea.CustomInfo;
             player.ReferenceHub.nicknameSync.Network_playerInfoToShow &= ~(PlayerInfoArea.Role | PlayerInfoArea.Nickname);
 
             // CustomInfo supports line breaks, so I have the "customInfo", then the CustomName, then the rolename
@@ -128,6 +142,13 @@ namespace Omni_Utils.Extensions
             string info = $"{(string.IsNullOrWhiteSpace(customInfo) ? string.Empty : $"<color=#FFFFFF></color>{customInfo}\n")}<color=#944710></color>{(player.HasCustomName ? $"{player.CustomName}<color=#944710>*</color>" : $"{player.Nickname}")}\n{role}";
 
             info = ProcessNickname(info, player);
+
+            if (!NicknameSync.ValidateCustomInfo(info, out _))
+            {
+                player.ReferenceHub.nicknameSync.Network_playerInfoToShow &= PlayerInfoArea.Role | PlayerInfoArea.Nickname;
+                return;
+            }
+
             player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = info;
         }
 

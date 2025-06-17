@@ -30,7 +30,7 @@
 
         public string Command { get; } = "rolename";
 
-        public string[] Aliases { get; }
+        public string[] Aliases { get; } = new string[] { "setrolename", "setrn", "omnirole" };
 
         public string Description { get; } = "Sets the rolename of all specified players. USAGE: rolename (player name or ID) (rolename)";
     }
