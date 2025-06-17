@@ -18,6 +18,10 @@ namespace Omni_CustomItems.Items
     public abstract class GogglesItem : CustomItem
     {
         public static Dictionary<int, GogglesItem> equippedGoggles = new Dictionary<int, GogglesItem>();
+
+        public string RemovalText { get; set; } = "You remove the {0}";
+        public string EquipText { get; set; } = "You put on the {0}";
+        public string FailureText { get; set; } = "You are already wearing something.";
         protected bool PlayerHasGoggles(Player player)
         {
             if(equippedGoggles.TryGetValue(player.Id, out GogglesItem gogglesItem))
@@ -33,7 +37,7 @@ namespace Omni_CustomItems.Items
             equippedGoggles.Remove(player.Id);
             if(showMessage)
             {
-                Player.Get(player.Id).ShowHint($"You remove the {Name}");
+                Player.Get(player.Id).ShowHint(string.Format(RemovalText, Name));
             }
             
         }
@@ -45,7 +49,7 @@ namespace Omni_CustomItems.Items
 
             if (showMessage)
             {
-                Player.Get(player.Id).ShowHint($"You put on the {Name}");
+                Player.Get(player.Id).ShowHint(string.Format(EquipText, Name));
             }
         }
         protected override void OnOwnerChangingRole(OwnerChangingRoleEventArgs e)
@@ -76,9 +80,9 @@ namespace Omni_CustomItems.Items
             RemoveGoggles(e.Player,false);
         }
 
-        protected override void OnDropping(DroppingItemEventArgs e)
+        protected override void OnDroppingItem(DroppingItemEventArgs e)
         {
-            base.OnDropping(e);
+            base.OnDroppingItem(e);
             if (Check(e.Item))
             {
                 equippedGoggles.TryGetValue(e.Player.Id, out GogglesItem item);
@@ -96,7 +100,7 @@ namespace Omni_CustomItems.Items
             if (equippedGoggles.ContainsKey(e.Player.Id))
             {
                 e.IsAllowed = false;
-                e.Player.ShowHint("You are already wearing something!");
+                e.Player.ShowHint(string.Format(FailureText, Name));
             }
         }
         protected void OnUsingCompleted(UsingItemCompletedEventArgs e)
