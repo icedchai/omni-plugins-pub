@@ -29,6 +29,8 @@ namespace Omni_Utils.Configs
 
         public string HeightCommandInputOutOfRange { get; set; } = "Invalid height! Please enter a number between {0}  and  {1}.";
 
+        public string HeightCommandAlreadySetHeightFailure { get; set; } = "You have already set your height this life.";
+
         public string HeightCommandSuccess { get; set; } = "Height set to {0}";
 
         public string Nickname { get; set; } = "nickname";

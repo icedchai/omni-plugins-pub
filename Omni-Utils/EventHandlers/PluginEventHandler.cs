@@ -15,6 +15,7 @@
     using Exiled.Events.EventArgs.Player;
     using Exiled.Events.EventArgs.Server;
     using MEC;
+    using Omni_Utils.Commands.QOL;
     using Omni_Utils.Extensions;
     using PlayerRoles;
     using UnityEngine;
@@ -82,7 +83,7 @@
         public void OnChangingRole(ChangingRoleEventArgs e)
         {
             Player player = e.Player;
-
+            HeightCmd.ChangedHeightThisLife.Remove(player);
             // Clearing relevant session variables on role change.
             if (player.SessionVariables.ContainsKey("omni_seed"))
             {

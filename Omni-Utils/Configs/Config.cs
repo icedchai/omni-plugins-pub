@@ -28,6 +28,7 @@
         public float HeightMax { get; set; } = 1.1f;
         [Description("Allows .height command")]
         public bool AllowHeightChange { get; set; } = true;
+        public bool AllowHeightChangeMoreThanOncePerLife { get; set; } = true;
         public float HeightChangeMin { get; set; } = 0.9f;
         public float HeightChangeMax { get; set; } = 1.1f;
         [Description("Nickname configs, good for roleplay purposes.")]

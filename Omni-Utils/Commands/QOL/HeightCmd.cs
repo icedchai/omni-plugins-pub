@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CommandSystem;
 using Exiled.API.Features;
 using Omni_Utils.Configs;
@@ -21,6 +22,8 @@ namespace Omni_Utils.Commands.QOL
 
         private static Config config => OmniUtilsPlugin.PluginInstance.Config;
 
+        internal static List<Player> ChangedHeightThisLife = new List<Player>();
+
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(sender);
@@ -38,7 +41,12 @@ namespace Omni_Utils.Commands.QOL
             {
                 response = Translation.NullPlayerError;
             }
-            if (player.Scale.y < config.HeightMin-0.01f || player.Scale.y > config.HeightMax+0.01f)
+            if (ChangedHeightThisLife.Contains(player) && OmniUtilsPlugin.PluginInstance.Config.AllowHeightChangeMoreThanOncePerLife)
+            {
+                response = Translation.HeightCommandAlreadySetHeightFailure;
+                return false;
+            }
+            if (player.Scale.y < config.HeightMin - 0.01f || player.Scale.y > config.HeightMax + 0.01f)
             {
                 response = string.Format(Translation.HeightCommandHeightOutOfRange, config.HeightChangeMin, config.HeightChangeMax);
                 return false;
@@ -56,6 +64,10 @@ namespace Omni_Utils.Commands.QOL
             }
             player.Scale=Vector3.one*height;
             response = string.Format(Translation.HeightCommandSuccess, height);
+            if (!ChangedHeightThisLife.Contains(player))
+            {
+                ChangedHeightThisLife.Add(player);
+            }
             return true;
         }
     }
