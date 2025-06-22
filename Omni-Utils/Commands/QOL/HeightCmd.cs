@@ -41,7 +41,7 @@ namespace Omni_Utils.Commands.QOL
             {
                 response = Translation.NullPlayerError;
             }
-            if (ChangedHeightThisLife.Contains(player) && OmniUtilsPlugin.PluginInstance.Config.AllowHeightChangeMoreThanOncePerLife)
+            if (!OmniUtilsPlugin.PluginInstance.Config.AllowHeightChangeMoreThanOncePerLife && ChangedHeightThisLife.Contains(player))
             {
                 response = Translation.HeightCommandAlreadySetHeightFailure;
                 return false;
