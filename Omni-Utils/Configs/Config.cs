@@ -20,6 +20,9 @@
 
         public bool DisableRadioDrain { get; set; } = true;
 
+        [Description("Effects are applied 0.5 seconds after player spawns.")]
+        public Dictionary<EffectType, byte> EffectsOnSpawn { get; set; } = new Dictionary<EffectType, byte>();
+
         [Description("Amount of stamina to consume when jumping. Set to 0 to disable (especially if other plugin already does this).")]
         public float StaminaUseOnJump { get; set; } = 30;
         [Description("Roleplay Height features include randomized height")]

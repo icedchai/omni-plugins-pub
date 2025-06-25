@@ -83,6 +83,15 @@
         public void OnChangingRole(ChangingRoleEventArgs e)
         {
             Player player = e.Player;
+
+            Timing.CallDelayed(0.5f, () =>
+            {
+                foreach (var kvp in Config.EffectsOnSpawn)
+                {
+                    player.EnableEffect(kvp.Key, kvp.Value);
+                }
+            });
+
             HeightCmd.ChangedHeightThisLife.Remove(player);
             // Clearing relevant session variables on role change.
             if (player.SessionVariables.ContainsKey("omni_seed"))
