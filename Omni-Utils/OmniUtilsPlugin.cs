@@ -77,7 +77,11 @@
         private void RegisterEvents()
         {
             eventHandler = new PluginEventHandler();
-            Player.Jumping += eventHandler.OnPlayerJump;
+            if (Config.StaminaUseOnJump > 0)
+            {
+                Player.Jumping += eventHandler.OnPlayerJump;
+            }
+
             Player.Dying += eventHandler.OnPlayerDeath;
             Player.ChangingNickname += eventHandler.OnChangingNickname;
             Player.ChangingRole += eventHandler.OnChangingRole;
@@ -89,7 +93,11 @@
 
         private void UnregisterEvents()
         {
-            Player.Jumping -= eventHandler.OnPlayerJump;
+            if (Config.StaminaUseOnJump > 0)
+            {
+                Player.Jumping -= eventHandler.OnPlayerJump;
+            }
+
             Player.Dying -= eventHandler.OnPlayerDeath;
             Player.ChangingNickname -= eventHandler.OnChangingNickname;
             Player.ChangingRole -= eventHandler.OnChangingRole;
